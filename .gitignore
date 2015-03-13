@@ -1,0 +1,5 @@
+/modules/static_cache/cache/*
+/cache/*
+/.htaccess
+/modules/database/bootstrap.php
+/nbproject
