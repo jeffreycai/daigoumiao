@@ -11,7 +11,7 @@ if (is_file($override_controller)) {
 
 $html = new HTML();
 
-$html->renderOut('core/backend/html_header', array('title' => i18n(array(
+$html->renderOut('core/backend/single_form_header', array('title' => i18n(array(
     'en' => 'Not authorised to visit page',
     'zh' => '没有访问页面的权限'
 ))));
@@ -24,6 +24,6 @@ $html->output("<p><a href='#' onclick='goback(); return false;'>".  i18n(array(
     'zh' => '返回'
 ))."</a>");
 $html->output('<script type="text/javascript">function goback(){window.history.back();}</script>');
-$html->renderOut('core/backend/html_footer');
+$html->renderOut('core/backend/single_form_footer');
 
 exit;

@@ -5,8 +5,8 @@ site_user:
     username: VARCHAR(24) NOT NULL UNIQUE
     email: VARCHAR(128) NOT NULL UNIQUE
     salt: VARCHAR(16) NOT NULL
-    password: VARCHAR(32) NOT NULL
-    active: TINYINT(1) DEFAULT 1
+    password: VARCHAR(32)
+    active: TINYINT(1) DEFAULT 0
 
 site_permission:
   pk: id

@@ -48,7 +48,12 @@ if (!$user->isLogin()) {
         'title' => 'Please login',
       ), true);
 
+      $html->renderOut('core/backend/single_form_header', array('title' => i18n(array(
+          'en' => 'Backend login',
+          'zh' => '登录后台'
+      ))));
       $html->renderOut('core/backend/login', array(), true);
+      $html->renderOut('core/backend/single_form_footer');
 
       $html->renderOut('core/backend/html_footer');
       

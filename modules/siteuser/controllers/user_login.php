@@ -16,11 +16,16 @@ if (is_file($override_controller)) {
 
 $html = new HTML();
 
-$html->renderOut('core/backend/html_header', array('title' => i18n(array(
-    'en' => 'Login',
-    'zh' => '登录'
-))));
+
+
+$html->renderOut('core/backend/single_form_header', array('title' => i18n(array(
+          'en' => 'User login',
+          'zh' => '用户登录'
+      ))));
 echo SiteUser::renderLoginForm();
-$html->renderOut('core/backend/html_footer');
+$html->renderOut('core/backend/single_form_footer', array(
+    'extra' => '<div  style="text-align: center;"><small class="signup"><a href="'.uri('users/signup').'">'.i18n(array('en' => 'signup as new user', 'zh' => '申请注册为新用户')).'</a></small></div>'
+));
+
 
 exit;

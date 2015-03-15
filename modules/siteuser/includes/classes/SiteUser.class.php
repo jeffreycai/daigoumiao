@@ -19,14 +19,14 @@ class SiteUser extends BaseSiteUser {
     
     $roles_form_markup = '<div id="form-field-roles"><label>Roles</label><ul class="checkbox">';
     foreach (SiteRole::findAll() as $role) {
-      $roles_form_markup .= '<li><label><input type="checkbox" name="roles['.$role->getid().']" value=1 '.(isset($_POST['roles'][$role->getId()]) ? 'checked="checked"' : ($user &&$user->hasRole($role->getName()) ? 'checked="checked"' : '')).' />' . $role->getName() . '</label></li>';
+      $roles_form_markup .= '<li><label><input type="checkbox" name="roles['.$role->getid().']" value=1 '.(isset($_POST['roles']) ? (isset($_POST['roles'][$role->getId()]) ? 'checked="checked"' : '') : ($user &&$user->hasRole($role->getName()) ? 'checked="checked"' : '')).' />' . $role->getName() . '</label></li>';
     }
     $roles_form_markup .= '</ul></div>';
     
     $rtn = '
 <form action="'.$action.'" method="POST" id="adduser" enctype="multipart/form-data">
   <div class="form-group" id="form-field-username">
-    <label for="username">'.i18n(array('en' => 'Username', 'zh' => '用户名')).$mandatory_label.'</label>
+    <label for="username">'.i18n(array('en' => 'Username', 'zh' => '用户名')).$mandatory_label.' <small style="font-weight: normal;"><i>('.  i18n(array('en' => 'alphabetical letters, number or underscore', 'zh' => '英文字母，数字或下划线')).')</i></small></label>
     <input type="text" class="form-control" id="username" name="username" value="'.$username.'" required placeholder="" />
   </div>
   <div class="form-group" id="form-field-email" >
@@ -34,7 +34,7 @@ class SiteUser extends BaseSiteUser {
     <input type="email" class="form-control" id="email" name="email" value="'.$email.'" required />
   </div>
   <div class="form-group" id="form-field-password">
-    <label for="password">'.i18n(array('en' => 'Password', 'zh' => '密码')).$mandatory_label.'</label>
+    <label for="password">'.i18n(array('en' => 'Password', 'zh' => '密码')).$mandatory_label.' <small style="font-weight: normal;"><i>('.i18n(array('en' => 'at least 6 letters', 'zh' => '至少6位')).')</i></small></label>
     <input type="password" class="form-control" id="password" name="password" value="'.$password.'" required />
   </div>
   <div class="form-group" id="form-field-password_confirm">
@@ -48,6 +48,64 @@ class SiteUser extends BaseSiteUser {
     </label>
   </div>
   ' . (is_backend() ? $roles_form_markup : '') . '
+  <div class="form-group" id="form-field-notice"><small><i>
+    '.$mandatory_label.i18n(array(
+        'en' => ' indicates mandatory fields',
+        'zh' => ' 标记为必填项'
+    )).'
+  </i></small></div>
+  <button type="submit" name="submit" class="btn btn-primary">'.(is_null($user) 
+            ? i18n(array('en' => 'Add new user', 'zh' => '添加新用户')) 
+            : i18n(array('en' => 'Update user', 'zh' => '更新用户'))).'</button>
+</form>
+';
+    return $rtn;
+  }
+  
+  
+    static function renderSignupForm(SiteUser $user = null, $action = '', $exclude_fields = array()) {
+    // set default action value
+    if ($action != '') {
+      $action = uri($action);
+    }
+    
+    // get vars from form submission
+    $username = isset($_POST['username'])  ? strip_tags($_POST['username'])  : (isset($user) ? $user->getUsername()  : '');
+    $email    = isset($_POST['email'])     ? strip_tags($_POST['email'])     : (isset($user) ? $user->getEmail()     : '');
+    $password = '';
+    $password_confirm = '';
+    $active   = isset($_POST['active'])    ? strip_tags($_POST['active'])    : (isset($user) ? $user->getActive()    : false);
+    
+    $mandatory_label = ' <span style="color: rgb(185,2,0); font-weight: bold;">*</span>';
+    
+    $active_field = '
+  <div class="checkbox" id="form-field-active">
+    <label>
+      <input type="checkbox" id="active" name="active" value="1" '.($active == false ? '' : 'checked="checked"').'> '.  i18n(array('en' => 'Active?', 'zh' => '有效用户')).'
+    </label>
+  </div>
+  ';
+    
+    $rtn = Message::renderMessages() . '
+<form action="'.$action.'" method="POST" id="adduser" enctype="multipart/form-data">
+  <div class="form-group" id="form-field-username">
+    <label for="username">'.i18n(array('en' => 'Username', 'zh' => '用户名')).$mandatory_label.' <small style="font-weight: normal;"><i>('.  i18n(array('en' => 'alphabetical letters, number or underscore', 'zh' => '英文字母，数字或下划线')).')</i></small></label>
+    <input type="text" class="form-control" id="username" name="username" value="'.$username.'" required placeholder="" />
+  </div>
+  <div class="form-group" id="form-field-email" >
+    <label for="email">'.i18n(array('en' => 'Email', 'zh' => '电子邮箱')).$mandatory_label.'</label>
+    <input type="email" class="form-control" id="email" name="email" value="'.$email.'" required />
+  </div>
+  <div class="form-group" id="form-field-password">
+    <label for="password">'.i18n(array('en' => 'Password', 'zh' => '密码')).$mandatory_label.' <small style="font-weight: normal;"><i>('.i18n(array('en' => 'at least 6 letters', 'zh' => '至少6位')).')</i></small></label>
+    <input type="password" class="form-control" id="password" name="password" value="'.$password.'" required />
+  </div>
+  <div class="form-group" id="form-field-password_confirm">
+    <label for="password_confirm">'.i18n(array('en' => 'Password again', 'zh' => '再次确认密码')).$mandatory_label.'</label>
+    <input type="password" class="form-control" id="password_confirm" name="password_confirm" value="'.$password_confirm.'" required />
+  </div>
+  ' . (class_exists('SiteProfile') ? SiteProfile::renderUpdateForm($user, $exclude_fields) : '') 
+    . (in_array('active', $exclude_fields) ? '' : $active_field) . '
   <div class="form-group" id="form-field-notice"><small><i>
     '.$mandatory_label.i18n(array(
         'en' => ' indicates mandatory fields',
@@ -118,7 +176,8 @@ class SiteUser extends BaseSiteUser {
       <input type="checkbox" name="remember" value="1" /> '.i18n(array('en' => 'Remember me', 'zh' => '记住我')).'
       </label>
     </div>
-    <input type="submit" name="submit" class="btn btn-lg btn-success btn-block '.(module_enabled('form') ? 'disabled' : '').'" value="'.i18n(array('en' => 'Login', 'zh' => '登录')).'" />
+    <input type="submit" name="submit" class="btn btn-lg btn-primary btn-block '.(module_enabled('form') ? 'disabled' : '').'" value="'.i18n(array('en' => 'Login', 'zh' => '登录')).'" />
+    <small class="forget"><a href="'.uri('users/forget-password').'">'.i18n(array('en' => 'forget password?', 'zh' => '忘记密码了?')).'</a></small>
     <input type="hidden" name="referer" value="'.$referer.'" />
     '.(module_enabled('form') ? Form::loadSpamToken('#login', UID_BACKEND_LOGIN_FORM) : '').'
   </fieldset>
@@ -297,5 +356,39 @@ class SiteUser extends BaseSiteUser {
     } else {
       return in_array($rs, $roles);
     }
+  }
+  
+  static function renderForgetPasswordForm() {
+    $rtn = Message::renderMessages() . '
+<form role="form" action="" method="post" id="forget_password">
+  <fieldset>
+    <div class="form-group">
+      <label for="email">'.i18n(array('en' => 'Your E-mail address', 'zh' => '您的电子箱地址')).'</label>
+      <input class="form-control" name="email" id="email" autofocus required="">
+    </div>
+    <input type="submit" name="submit" class="btn btn-lg btn-primary btn-block '.(module_enabled('form') ? 'disabled' : '').'" value="'.i18n(array('en' => 'Confirm', 'zh' => '确认')).'" />
+    '.(module_enabled('form') ? Form::loadSpamToken('#forget_password', UID_BACKEND_LOGIN_FORM) : '').'
+  </fieldset>
+</form>
+';
+    return $rtn;
+  }
+  
+  public function sendPasswordResetEmail() {
+    $html = new HTML();
+    $content;
+    if (is_file(MODULESROOT . '/site/templates/email/password_reset')) {
+      $content = $html->render('site/email/password_reset', array(
+         'user' => $this
+     ));
+    } else {
+      $content = $html->render('siteuser/email/password_reset', array(
+          'user' => $this
+      ));
+    }
+    sendmail(i18n(array(
+        'en' => 'Please reset your password',
+        'zh' => '请重置您的密码'
+    )), $content, $this->getEmail());
   }
 }

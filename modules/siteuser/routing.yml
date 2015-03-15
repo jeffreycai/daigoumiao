@@ -46,12 +46,22 @@ routing:
     isSecure: 0
     i18n: 0
     controller: siteuser/user_logout
+  user_signup:
+    path: ^\/users\/signup\/?$
+    isSecure: 0
+    i18n: 1
+    controller: siteuser/user_signup
   user_unauthorised:
     path: ^\/users\/unauthorised\/?$
     isSecure: 0
     i18n: 1
     controller: siteuser/unauthorised
     static_cache: 99999
+  user_forget_password:
+    path: ^\/users\/forget-password\/?$
+    isSecure: 0
+    i18n: 1
+    controller: siteuser/forget_password
   
 #  role_list:
 #    path: ^\/admin\/role\/manage\/?$
