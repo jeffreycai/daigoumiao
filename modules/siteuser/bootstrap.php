@@ -1,4 +1,5 @@
 <?php
+define('SITEUSER_FORM_SPAM_TOKEN', 'siteuser form spam token');
 
 $user = User::getInstance();
 if (!is_cli() && $user->isLogin() && is_backend()) {

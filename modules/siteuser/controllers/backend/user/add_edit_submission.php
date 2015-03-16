@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
   
   // spam token for frontend only
   if (is_frontend()) {
-    if (module_enabled('form') && !Form::checkSpamToken(UID_BACKEND_LOGIN_FORM)) {
+    if (module_enabled('form') && !Form::checkSpamToken(SITEUSER_FORM_SPAM_TOKEN)) {
       $messages[] = new Message(Message::DANGER, i18n(array(
           'en' => 'Form expired. Please try submit again',
           'zh' => '表单超时，请重新尝试提交表单'

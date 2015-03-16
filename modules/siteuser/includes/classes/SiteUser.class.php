@@ -117,7 +117,7 @@ class SiteUser extends BaseSiteUser {
       'en' => 'Signup',
       'zh' => '注册'
   )).'</button>
-  '.(module_enabled('form') ? Form::loadSpamToken('#signup', UID_BACKEND_LOGIN_FORM) : '').'
+  '.(module_enabled('form') ? Form::loadSpamToken('#signup', SITEUSER_FORM_SPAM_TOKEN) : '').'
 </form>
 ';
     return $rtn;
@@ -164,7 +164,7 @@ class SiteUser extends BaseSiteUser {
 
     // calculate referer
     if (isset($_SESSION['siteuser_login_referer'])) {
-      $referer = isset($_SESSION['siteuser_login_referer']);
+      $referer = $_SESSION['siteuser_login_referer'];
       unset($_SESSION['siteuser_login_referer']);
     } else if (isset($_SERVER['HTTP_REFERER'])) {
       $referer = $_SERVER['HTTP_REFERER'];
@@ -189,10 +189,10 @@ class SiteUser extends BaseSiteUser {
       <input type="checkbox" name="remember" value="1" /> '.i18n(array('en' => 'Remember me', 'zh' => '记住我')).'
       </label>
     </div>
-    <input type="submit" name="submit" class="btn btn-lg btn-primary btn-block '.(module_enabled('form') ? 'disabled' : '').'" value="'.i18n(array('en' => 'Login', 'zh' => '登录')).'" />
+    <input type="submit" name="submit" class="btn btn-primary btn-block '.(module_enabled('form') ? 'disabled' : '').'" value="'.i18n(array('en' => 'Login', 'zh' => '登录')).'" />
     <small class="forget"><a href="'.uri('users/forget-password').'">'.i18n(array('en' => 'forget password?', 'zh' => '忘记密码了?')).'</a></small>
     <input type="hidden" name="referer" value="'.$referer.'" />
-    '.(module_enabled('form') ? Form::loadSpamToken('#login', UID_BACKEND_LOGIN_FORM) : '').'
+    '.(module_enabled('form') ? Form::loadSpamToken('#login', SITEUSER_FORM_SPAM_TOKEN) : '').'
   </fieldset>
 </form>
 ';
@@ -377,10 +377,10 @@ class SiteUser extends BaseSiteUser {
   <fieldset>
     <div class="form-group">
       <label for="email">'.i18n(array('en' => 'Your E-mail address', 'zh' => '您的电子箱地址')).'</label>
-      <input class="form-control" name="email" id="email" autofocus required="">
+      <input class="form-control" name="email" type="email" id="email" autofocus required="">
     </div>
-    <input type="submit" name="submit" class="btn btn-lg btn-primary btn-block '.(module_enabled('form') ? 'disabled' : '').'" value="'.i18n(array('en' => 'Confirm', 'zh' => '确认')).'" />
-    '.(module_enabled('form') ? Form::loadSpamToken('#forget_password', UID_BACKEND_LOGIN_FORM) : '').'
+    <input type="submit" name="submit" class="btn btn-primary btn-block '.(module_enabled('form') ? 'disabled' : '').'" value="'.i18n(array('en' => 'Confirm', 'zh' => '确认')).'" />
+    '.(module_enabled('form') ? Form::loadSpamToken('#forget_password', SITEUSER_FORM_SPAM_TOKEN) : '').'
   </fieldset>
 </form>
 ';
@@ -433,5 +433,25 @@ class SiteUser extends BaseSiteUser {
     
     return parent::delete();
     
+  }
+  
+  static function renderPasswordResetForm() {
+    $rtn = Message::renderMessages() . '
+<form role="form" action="" method="post" id="forget_password_reset">
+  <fieldset>
+    <div class="form-group form-field-password">
+      <label for="password">'.i18n(array('en' => 'Your new password', 'zh' => '您的新密码')).'</label>
+      <input class="form-control" name="password" type="password" id="password" autofocus required="">
+    </div>
+    <div class="form-group form-field-password-confirm">
+      <label for="password_confirm">'.i18n(array('en' => 'Confirm your password', 'zh' => '确认密码')).'</label>
+      <input class="form-control" name="password_confirm" type="password" id="password_confirm" required="">
+    </div>
+    <input type="submit" name="submit" class="btn btn-primary btn-block '.(module_enabled('form') ? 'disabled' : '').'" value="'.i18n(array('en' => 'Update password', 'zh' => '更新密码')).'" />
+    '.(module_enabled('form') ? Form::loadSpamToken('#forget_password_reset', SITEUSER_FORM_SPAM_TOKEN) : '').'
+  </fieldset>
+</form>
+';
+    return $rtn;
   }
 }

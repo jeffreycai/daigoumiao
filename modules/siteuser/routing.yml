@@ -62,6 +62,11 @@ routing:
     isSecure: 0
     i18n: 1
     controller: siteuser/forget_password
+  user_forget_password_reset:
+    path: ^\/user\/(\d+)\/forget-password\/reset\/([^\/]+)\/?$
+    isSecure: 0
+    i18n: 1
+    controller: siteuser/forget_password_reset
   user_signup_activate:
     path: ^\/user\/(\d+)\/activate\/([^\/]+)\/?$
     isSecure: 0

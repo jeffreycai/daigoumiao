@@ -51,7 +51,7 @@ if (is_null($user) || !$user->checkPassword($password) || $user->getActive() == 
 }
 
 // check spam
-if (module_enabled('form') && !Form::checkSpamToken(UID_BACKEND_LOGIN_FORM)) {
+if (module_enabled('form') && !Form::checkSpamToken(SITEUSER_FORM_SPAM_TOKEN)) {
   $message = new Message(Message::DANGER, i18n(array(
       'en' => 'Form login session expired. Please try again',
       'zh' => '表单提交时限过期，请重新尝试登录'
@@ -68,6 +68,7 @@ unset($_SESSION['siteuser_login_referer']);
 if (!empty($referer) 
         && !preg_match('/\/users\/?$/', $referer) // we don't go back to login for loop
         && !preg_match('/\/confirm\/?$/', $referer) // we don't go back to 'confirm' page as it doesn't have meaningful message
+        && !preg_match('/forget\-password\/?$/', $referer)
 ) {
   HTML::forward($referer);
 }

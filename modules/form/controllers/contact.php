@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
   }
 
   // check spam
-  if (module_enabled('form') && !Form::checkSpamToken(UID_BACKEND_LOGIN_FORM)) {
+  if (module_enabled('form') && !Form::checkSpamToken('global contact form')) {
     $message = new Message(Message::DANGER, i18n(array(
         'en' => 'Form login session expired. Please try again',
         'zh' => '表单提交时限过期，请重新尝试登录'

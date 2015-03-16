@@ -75,7 +75,7 @@ jQuery(function($){
       )).'
     </i></small></div>
     <input type="submit" name="submit" class="btn btn-lg btn-success btn-block disabled" value="'.i18n(array('en' => 'Login', 'zh' => '登录')).'" />
-    '.Form::loadSpamToken('#contact', UID_BACKEND_LOGIN_FORM).'
+    '.Form::loadSpamToken('#contact', 'global contact form').'
   </fieldset>
 </form>
 ';
