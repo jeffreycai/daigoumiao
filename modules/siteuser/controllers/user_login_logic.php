@@ -34,10 +34,17 @@ if (strpos($username, '@') == false) {
 } else {
   $user = SiteUser::findByEmail($username);
 }
-if (is_null($user) || !$user->checkPassword($password)) {
+if (is_null($user) || !$user->checkPassword($password) || $user->getActive() == 0) {
   Message::register(new Message(Message::DANGER, i18n(array(
       'en' => 'Username and password don\'t match. Please try again',
       'zh' => '用户名和密码不匹配，请重新尝试'
+  ))));
+  $_SESSION['siteuser_login_referer'] = $referer;
+  HTML::forwardBackToReferer();
+} else if ($user->getEmailActivated() == 0) {
+  Message::register(new Message(Message::DANGER, i18n(array(
+      'en' => 'Your account is not yet activated. To resend the activation email, please <a href="'.uri('user/'.$user->getId().'/activate_resend_email/'.$user->getSalt(), false).'">click here</a>',
+      'zh' => '您的账号还未激活。如需重新发送激活邮件，请<a href="'.uri('user/'.$user->getId().'/activate_resend_email/'.$user->getSalt(), false).'">点击此处</a>'
   ))));
   $_SESSION['siteuser_login_referer'] = $referer;
   HTML::forwardBackToReferer();
@@ -58,7 +65,10 @@ if (module_enabled('form') && !Form::checkSpamToken(UID_BACKEND_LOGIN_FORM)) {
 $user->login(is_null($remember) ? false : true);
 // forward back to referer if exists
 unset($_SESSION['siteuser_login_referer']);
-if (!empty($referer) && !preg_match('/\/users$/', $referer)) {
+if (!empty($referer) 
+        && !preg_match('/\/users\/?$/', $referer) // we don't go back to login for loop
+        && !preg_match('/\/confirm\/?$/', $referer) // we don't go back to 'confirm' page as it doesn't have meaningful message
+) {
   HTML::forward($referer);
 }
 HTML::forward('');

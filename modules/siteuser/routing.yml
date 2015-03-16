@@ -62,6 +62,17 @@ routing:
     isSecure: 0
     i18n: 1
     controller: siteuser/forget_password
+  user_signup_activate:
+    path: ^\/user\/(\d+)\/activate\/([^\/]+)\/?$
+    isSecure: 0
+    i18n: 0
+    controller: siteuser/user_signup_activate
+  user_signup_activate_resend_email:
+    path: ^\/user\/(\d+)\/activate_resend_email\/([^\/]+)\/?$
+    isSecure: 0
+    i18n: 0
+    controller: siteuser/user_signup_activate_resend_email
+  
   
 #  role_list:
 #    path: ^\/admin\/role\/manage\/?$

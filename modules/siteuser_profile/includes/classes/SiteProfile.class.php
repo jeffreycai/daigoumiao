@@ -65,4 +65,11 @@ class SiteProfile extends BaseSiteProfile {
     $settings = Vars::getSettings();
     return get_sub_root() . "/modules/siteuser_profile/avatars/" . $settings['profile']['avatar_default'];
   }
+  
+  public function delete() {
+    // we delete avatar image first
+    @unlink(AVATAR_FOLDER . '/' . $this->getThumbnail());
+    
+    parent::delete();
+  }
 }

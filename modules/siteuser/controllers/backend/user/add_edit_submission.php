@@ -2,6 +2,8 @@
 /**
  * Please set $uid before including this file, if updating existing user
  */
+$uid = isset($uid) ? $uid : null;
+$user = isset($user) ? $user : null;
 
 if (isset($_POST['submit'])) {
   $username = isset($_POST['username']) ? strip_tags(trim($_POST['username'])) : null;
@@ -9,12 +11,23 @@ if (isset($_POST['submit'])) {
   $password = isset($_POST['password']) ? strip_tags(trim($_POST['password'])) : null;
   $password_confirm = isset($_POST['password_confirm']) ? strip_tags(trim($_POST['password_confirm'])) : null;
   $roles    = isset($_POST['roles']) && is_array($_POST['roles']) ? $_POST['roles'] : array();
+  $noemailnotification = isset($_POST['noemailnotification']) ? true : false;
   if (is_backend()) {
     $active   = isset($_POST['active'])   ? strip_tags(trim($_POST['active']))   : null;
   }
   
   // validation
   $messages = array();
+  
+  // spam token for frontend only
+  if (is_frontend()) {
+    if (module_enabled('form') && !Form::checkSpamToken(UID_BACKEND_LOGIN_FORM)) {
+      $messages[] = new Message(Message::DANGER, i18n(array(
+          'en' => 'Form expired. Please try submit again',
+          'zh' => '表单超时，请重新尝试提交表单'
+      )));
+    }
+  }
   
   // username
   if (is_null($username)) {
@@ -92,7 +105,7 @@ if (isset($_POST['submit'])) {
   
   // profile
   if (module_enabled('siteuser_profile')) {
-    require MODULESROOT . '/siteuser_profile/includes/fields_validation.php';
+    require MODULESROOT . '/siteuser_profile/controllers/fields_validation.php';
   }
   
   // eorror handling
@@ -110,21 +123,45 @@ if (isset($_POST['submit'])) {
     $user->putPassword($password);
     if (is_backend()) {
       $user->setActive(empty($active) ? 0 : 1);
+      $user->setEmailActivated(1);
+    }
+    
+    // for new user
+    if (empty($uid)) {
+      $user->setCreatedAt(time());
+      // if $noemailnotification flag is not set
+      if (!$noemailnotification) {
+        $user->setEmailActivated(0);
+      }
     }
     
     if ($user->save()) {
       // update profile
       if (module_enabled('siteuser_profile')) {
-        require MODULESROOT . '/siteuser_profile/includes/fields_update.php';
+        require MODULESROOT . '/siteuser_profile/controllers/fields_update.php';
       }
       
       if (empty($uid)) {
-        Message::register(new Message(Message::SUCCESS, i18n(array(
-            'en' => 'New user created successfully',
-            'zh' => '新用户添加成功'
-        ))));
-        // clear $_POST so that our form is not pre-populated
-        unset($_POST);
+        if (!$noemailnotification) {
+          $user->sendAccountActivationEmail();
+          Message::register(new Message(Message::SUCCESS, i18n(array(
+              'en' => 'Thank you for registering with us. An activation email has been sent to your mail box. Please activate your account by clicking the link in the mail.',
+              'zh' => '感谢您注册新帐号。我们刚给您的注册邮箱发送了一份帐号激活邮件，请点击邮件内的激活链接'
+          )). '<br /><br />'.i18n(array(
+              'en' => 'After you activate your account, you can ',
+              'zh' => '激活您的账号后，您可以'
+          )).'<a href="'.uri('users').'">'.i18n(array(
+              'en' => 'login here',
+              'zh' => '在此登录'
+          )).'</a>'));
+        } else {
+          Message::register(new Message(Message::SUCCESS, i18n(array(
+              'en' => 'New user created successfully',
+              'zh' => '新用户添加成功'
+          ))));
+          // clear $_POST so that our form is not pre-populated
+          unset($_POST);
+        }
       } else {
         Message::register(new Message(Message::SUCCESS, i18n(array(
             'en' => 'User updated successfully',

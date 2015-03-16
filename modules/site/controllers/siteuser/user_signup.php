@@ -1,22 +1,15 @@
 <?php
 
-// check if already login, if yes, redirect to homepage
-if (is_login()) {
-  HTML::forward('');
+/** this is an override of the original controller in siteuser module **/
+
+// by default we assign the user as role AFFILIATOR
+if (!is_null($user) && $user->getEmailActivated() == 0) {
+  $ur = new SiteUserRole();
+  $ur->setRoleId(2);
+  $ur->setUserId($user->getId());
+  $ur->save();
+  HTML::forward('confirm');
 }
-
-// handle submission
-$submission_handler = MODULESROOT . '/siteuser/controllers/backend/user/add_edit_submission.php';
-require $submission_handler;
-
-
-// override this call if "site" module has the override controller
-$override_controller = MODULESROOT . '/site/controllers/siteuser/user_signup.php';
-if (is_file($override_controller)) {
-  require $override_controller;
-  exit;
-}
-
 
 
 $html = new HTML();

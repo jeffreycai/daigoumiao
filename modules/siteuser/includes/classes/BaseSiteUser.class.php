@@ -9,6 +9,8 @@ include_once MODULESROOT . DS . 'core' . DS . 'includes' . DS . 'classes' . DS .
  * - salt
  * - password
  * - active
+ * - email_activated
+ * - created_at
  */
 class BaseSiteUser extends DBObject {
   /**
@@ -65,6 +67,18 @@ class BaseSiteUser extends DBObject {
    public function getActive() {
      return $this->getDbFieldActive();
    }
+   public function setEmailActivated($var) {
+     $this->setDbFieldEmail_activated($var);
+   }
+   public function getEmailActivated() {
+     return $this->getDbFieldEmail_activated();
+   }
+   public function setCreatedAt($var) {
+     $this->setDbFieldCreated_at($var);
+   }
+   public function getCreatedAt() {
+     return $this->getDbFieldCreated_at();
+   }
 
   
   
@@ -89,8 +103,10 @@ CREATE TABLE IF NOT EXISTS `site_user` (
   `username` VARCHAR(24) NOT NULL UNIQUE ,
   `email` VARCHAR(128) NOT NULL UNIQUE ,
   `salt` VARCHAR(16) NOT NULL ,
-  `password` VARCHAR(32) NOT NULL ,
+  `password` VARCHAR(32) ,
   `active` TINYINT(1) DEFAULT 1 ,
+  `email_activated` TINYINT(1) DEFAULT 1 ,
+  `created_at` INT NOT NULL ,
   PRIMARY KEY (`id`)
 )
 ENGINE = InnoDB

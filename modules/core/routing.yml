@@ -25,6 +25,12 @@ routing:
     isSecure: 1
     i18n: 1
     controller: core/backend/maintenance
+  
+  confirm:
+    path: ^\/confirm\/?
+    isSecure: 0
+    i18n: 1
+    controller: core/confirm
     
   lang_switch:
     path: ^\/switch\/([^\/]+)$

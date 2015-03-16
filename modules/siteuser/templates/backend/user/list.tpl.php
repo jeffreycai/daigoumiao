@@ -32,6 +32,7 @@ $end_entry = min(array($total, $current_page*$per_page));
         <th><?php i18n_echo(array('en' => 'ID', 'zh' => 'ID')) ?></th>
         <th><?php i18n_echo(array('en' => 'Username', 'zh' => '用户名')) ?></th>
         <th><?php i18n_echo(array('en' => 'Active?', 'zh' => '已激活?')) ?></th>
+        <th><?php i18n_echo(array('en' => 'EAct?', 'zh' => '邮激活?')) ?></th>
         <th><?php i18n_echo(array('en' => 'Roles', 'zh' => '角色')) ?></th>
         <th><?php i18n_echo(array('en' => 'Email', 'zh' => '邮箱')) ?></th>
         <th><?php i18n_echo(array('en' => 'Actions', 'zh' => '操作')) ?></th>
@@ -45,6 +46,7 @@ $end_entry = min(array($total, $current_page*$per_page));
       <td><?php echo $user->getId() ?></td>
       <td><?php echo $user->getUsername() ?></td>
       <td><i class="fa fa-<?php echo $user->getActive() ? 'check' : 'times' ?>"></i></td>
+      <td><i class="fa fa-<?php echo $user->getEmailActivated() ? 'check' : 'times' ?>"></i></td>
       <td>
         <?php 
         $roles = array();

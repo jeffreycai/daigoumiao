@@ -60,7 +60,8 @@ CREATE TABLE IF NOT EXISTS `site_role` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(32) NOT NULL ,
   PRIMARY KEY (`id`)
-)
+ ,
+INDEX `site_role_name` (`name` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_general_ci;

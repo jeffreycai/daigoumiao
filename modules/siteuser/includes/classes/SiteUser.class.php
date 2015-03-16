@@ -47,6 +47,7 @@ class SiteUser extends BaseSiteUser {
       <input type="checkbox" id="active" name="active" value="1" '.($active == false ? '' : 'checked="checked"').'> '.  i18n(array('en' => 'Active?', 'zh' => '有效用户')).'
     </label>
   </div>
+  <input type="hidden" value=1 name="noemailnotification" />
   ' . (is_backend() ? $roles_form_markup : '') . '
   <div class="form-group" id="form-field-notice"><small><i>
     '.$mandatory_label.i18n(array(
@@ -87,7 +88,7 @@ class SiteUser extends BaseSiteUser {
   ';
     
     $rtn = Message::renderMessages() . '
-<form action="'.$action.'" method="POST" id="adduser" enctype="multipart/form-data">
+<form action="'.$action.'" method="POST" id="signup" enctype="multipart/form-data">
   <div class="form-group" id="form-field-username">
     <label for="username">'.i18n(array('en' => 'Username', 'zh' => '用户名')).$mandatory_label.' <small style="font-weight: normal;"><i>('.  i18n(array('en' => 'alphabetical letters, number or underscore', 'zh' => '英文字母，数字或下划线')).')</i></small></label>
     <input type="text" class="form-control" id="username" name="username" value="'.$username.'" required placeholder="" />
@@ -112,9 +113,11 @@ class SiteUser extends BaseSiteUser {
         'zh' => ' 标记为必填项'
     )).'
   </i></small></div>
-  <button type="submit" name="submit" class="btn btn-primary">'.(is_null($user) 
-            ? i18n(array('en' => 'Add new user', 'zh' => '添加新用户')) 
-            : i18n(array('en' => 'Update user', 'zh' => '更新用户'))).'</button>
+  <button type="submit" name="submit" class="btn btn-primary btn-block disabled">'.i18n(array(
+      'en' => 'Signup',
+      'zh' => '注册'
+  )).'</button>
+  '.(module_enabled('form') ? Form::loadSpamToken('#signup', UID_BACKEND_LOGIN_FORM) : '').'
 </form>
 ';
     return $rtn;
@@ -158,7 +161,17 @@ class SiteUser extends BaseSiteUser {
   }
   
   static function renderLoginForm() {
-    $referer = (isset($_SESSION['siteuser_login_referer']) ? $_SESSION['siteuser_login_referer'] : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''));
+
+    // calculate referer
+    if (isset($_SESSION['siteuser_login_referer'])) {
+      $referer = isset($_SESSION['siteuser_login_referer']);
+      unset($_SESSION['siteuser_login_referer']);
+    } else if (isset($_SERVER['HTTP_REFERER'])) {
+      $referer = $_SERVER['HTTP_REFERER'];
+    } else {
+      $referer = '';
+    }
+    
     
     $rtn = Message::renderMessages() . '
 <form role="form" action="'.uri('users/login', false).'" method="post" id="login">
@@ -390,5 +403,35 @@ class SiteUser extends BaseSiteUser {
         'en' => 'Please reset your password',
         'zh' => '请重置您的密码'
     )), $content, $this->getEmail());
+  }
+  
+  public function sendAccountActivationEmail() {
+    $html = new HTML();
+    $content;
+    if (is_file(MODULESROOT . '/site/templates/email/account_activate')) {
+      $content = $html->render('site/email/account_activate', array(
+         'user' => $this
+     ));
+    } else {
+      $content = $html->render('siteuser/email/account_activate', array(
+          'user' => $this
+      ));
+    }
+    sendmail(i18n(array(
+        'en' => 'Activate your account',
+        'zh' => '激活您的账号'
+    )), $content, $this->getEmail());
+  }
+  
+  public function delete() {
+    
+    // we delete profile as well
+    if (module_enabled('siteuser_profile')) {
+      $profile = $this->getProfile();
+      $profile->delete();
+    }
+    
+    return parent::delete();
+    
   }
 }

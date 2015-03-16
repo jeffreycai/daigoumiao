@@ -488,6 +488,10 @@ function is_backend() {
   return (preg_match('/^\/admin/', get_request_uri_relative()) && !is_cli());
 }
 
+function is_frontend() {
+  return !is_backend();
+}
+
 /**
  * check if maintenance mode is on
  */

@@ -14,7 +14,7 @@ jQuery(function($){
   $.get("/' . get_sub_root() . 'form/spam/token/fetch?unique_id='.$unique_id.'", function(data) {
     var input = $("<input type=\'hidden\' name=\'"+data["key"]+"\' value=\'"+data["value"]+"\' />");
     $("'.$jquery_selector.'").append(input);
-    $("'.$jquery_selector.' input[type=submit]").removeClass("disabled");
+    $("'.$jquery_selector.' input[type=submit], '.$jquery_selector.' button[type=submit]").removeClass("disabled");
   }, "json");
 });
 </script>
