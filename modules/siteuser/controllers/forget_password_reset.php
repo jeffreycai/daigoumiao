@@ -1,6 +1,7 @@
 <?php
 $uid = isset($vars[1]) ? trim(strip_tags($vars[1])) : null;
 $salt = isset($vars[2]) ? trim(strip_tags($vars[2])) : null;
+$salt = is_null($salt) ? $salt : decrypt($salt);
 
 // validation
 if (is_null($uid) || is_null($salt)) {

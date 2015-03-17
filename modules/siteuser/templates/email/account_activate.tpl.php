@@ -8,7 +8,7 @@
       'en' => 'Thank you for registering with us. Please click the link below to activate your account:',
       'zh' => '感谢您的注册，请点击下面的链接激活您的账号'
   )); 
-  $url = uri('user/'.$user->getId().'/activate/'.$user->getSalt(), false);
+  $url = uri('user/'.$user->getId().'/activate/'.encrypt($user->getSalt()), false);
   $ssl = !empty($s['HTTPS']) && $s['HTTPS'] == 'on';
   ?>
 </p>

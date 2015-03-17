@@ -43,8 +43,8 @@ if (is_null($user) || !$user->checkPassword($password) || $user->getActive() == 
   HTML::forwardBackToReferer();
 } else if ($user->getEmailActivated() == 0) {
   Message::register(new Message(Message::DANGER, i18n(array(
-      'en' => 'Your account is not yet activated. To resend the activation email, please <a href="'.uri('user/'.$user->getId().'/activate_resend_email/'.$user->getSalt(), false).'">click here</a>',
-      'zh' => '您的账号还未激活。如需重新发送激活邮件，请<a href="'.uri('user/'.$user->getId().'/activate_resend_email/'.$user->getSalt(), false).'">点击此处</a>'
+      'en' => 'Your account is not yet activated. To resend the activation email, please <a href="'.uri('user/'.$user->getId().'/activate_resend_email/'.encrypt($user->getSalt()), false).'">click here</a>',
+      'zh' => '您的账号还未激活。如需重新发送激活邮件，请<a href="'.uri('user/'.$user->getId().'/activate_resend_email/'.encrypt($user->getSalt()), false).'">点击此处</a>'
   ))));
   $_SESSION['siteuser_login_referer'] = $referer;
   HTML::forwardBackToReferer();

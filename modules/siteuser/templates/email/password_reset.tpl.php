@@ -3,7 +3,7 @@
       'en' => 'Please click the link below to reset your password:',
       'zh' => '请点击以下链接重置您的密码：'
   )); 
-  $url = uri('user/'.$user->getId().'/forget-password/reset/'.$user->getSalt(), false);
+  $url = uri('user/'.$user->getId().'/forget-password/reset/'.encrypt($user->getSalt()), false);
   $ssl = !empty($s['HTTPS']) && $s['HTTPS'] == 'on';
   ?>
 </p>

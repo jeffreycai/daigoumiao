@@ -658,3 +658,26 @@ function load_library_mobile_detect() {
   require_once  MODULESROOT . DS . 'core' . DS . 'includes' . DS . 'libraries' . DS . 'mobile-detect' . DS . 'Mobile_Detect.php';
 }
 
+function encrypt($content) {
+  // add random char at both ends
+  $content = get_random_string(4) . $content . get_random_string(4);
+  // base64_encode
+  $content = base64_encode($content);
+  // swap at position 4
+  $content = substr($content, 4, strlen($content) - 4) . substr($content, 0, 4);
+  // reverse it
+  $content = strrev($content);
+  return $content;
+}
+
+function decrypt($content) {
+  // reverse it
+  $content = strrev($content);
+  // swap at position -4
+  $content = substr($content, -4) . substr($content, 0, strlen($content) - 4);
+  // base64_decode
+  $content = base64_decode($content);
+  // strip random chars
+  $content = substr($content, 4, strlen($content) - 8);
+  return $content;
+}

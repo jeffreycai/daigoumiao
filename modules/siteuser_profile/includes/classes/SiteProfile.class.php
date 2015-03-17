@@ -60,10 +60,10 @@ class SiteProfile extends BaseSiteProfile {
   
   public function getThumbnailUrl() {
     if ($this->getThumbnail()) {
-      return get_sub_root() . "/modules/siteuser_profile/avatars/" . $this->getThumbnail();
+      return get_sub_root() . "/files/avatars/" . $this->getThumbnail();
     }
     $settings = Vars::getSettings();
-    return get_sub_root() . "/modules/siteuser_profile/avatars/" . $settings['profile']['avatar_default'];
+    return get_sub_root() . "/files/avatars/" . $settings['profile']['avatar_default'];
   }
   
   public function delete() {

@@ -2,5 +2,8 @@
 
 //_debug($_SESSION);
 
-echo "index";
 
+echo encrypt('I am a good man');
+echo "<br />";
+
+echo decrypt('sRHR=EneXdjbh1GIk92bnBSYg0WYgk0c');
