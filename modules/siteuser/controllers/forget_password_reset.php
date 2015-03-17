@@ -42,13 +42,10 @@ if (isset($_POST['submit'])) {
   $user->putPassword($password);
   $user->save();
   Message::register(new Message(Message::SUCCESS, i18n(array(
-      'en' => 'Your password has been successfully updated',
-      'zh' => '您的密码已经成功更新了'
-  )).'<br /><small><a href="'.uri('users').'">'.i18n(array(
-      'en' => 'go to login page',
-      'zh' => '前往登录页面'
-  )).'</a></small>'));
-  HTML::forward('confirm');
+      'en' => 'Your password has been successfully updated. You may sign in below',
+      'zh' => '您的密码已经成功更新了。您现在可以登录了'
+  ))));
+  HTML::forward('users');
 }
 
 
