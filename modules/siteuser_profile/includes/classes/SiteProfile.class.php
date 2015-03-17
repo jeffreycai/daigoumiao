@@ -68,7 +68,7 @@ class SiteProfile extends BaseSiteProfile {
   
   public function delete() {
     // we delete avatar image first
-    @unlink(AVATAR_FOLDER . '/' . $this->getThumbnail());
+    @unlink(AVATAR_DIR . '/' . $this->getThumbnail());
     
     parent::delete();
   }

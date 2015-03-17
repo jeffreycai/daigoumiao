@@ -1,9 +1,10 @@
 <?php
 
-define('STATIC_CACHE_ROOT', __DIR__ . DS . 'cache');
-
-// check cache folder writable
-if (!is_writable(STATIC_CACHE_ROOT)) {
+define('STATIC_CACHE_DIR', FILE_DIR . DS . 'static_cache');
+if (!is_dir(STATIC_CACHE_DIR)) {
+  mkdir(STATIC_CACHE_DIR);
+}
+if (!is_writable(STATIC_CACHE_DIR)) {
   die('Please set static_cache module cache folder to writable.');
 }
 
@@ -16,7 +17,7 @@ if (ENV == 'prod' && !is_cli()) {
   $filename = make_cache_filename($url);
   
   // if it is cached, return the cached version
-  $file = STATIC_CACHE_ROOT . DS . $filename;
+  $file = STATIC_CACHE_DIR . DS . $filename;
 
   if ($file = shell_exec('find ' . $file . '*')) {
     $file = trim($file);

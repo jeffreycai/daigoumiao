@@ -3,4 +3,4 @@
 /.htaccess
 /modules/database/bootstrap.php
 /nbproject
-/modules/siteuser_profile/avatars/*
+/files

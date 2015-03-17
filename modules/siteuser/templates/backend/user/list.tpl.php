@@ -35,6 +35,7 @@ $end_entry = min(array($total, $current_page*$per_page));
         <th><?php i18n_echo(array('en' => 'EAct?', 'zh' => '邮激活?')) ?></th>
         <th><?php i18n_echo(array('en' => 'Roles', 'zh' => '角色')) ?></th>
         <th><?php i18n_echo(array('en' => 'Email', 'zh' => '邮箱')) ?></th>
+        <th><?php i18n_echo(array('en' => 'Created at', 'zh' => '创建于')) ?></th>
         <th><?php i18n_echo(array('en' => 'Actions', 'zh' => '操作')) ?></th>
       </tr>
   </thead>
@@ -57,6 +58,7 @@ $end_entry = min(array($total, $current_page*$per_page));
         ?>
       </td>
       <td><?php echo $user->getEmail() ?></td>
+      <td><?php echo date('Y-m-d', $user->getCreatedAt()) ?></td>
       <td>
         <a class="edit" href="<?php print_uri('admin/user/edit/' . $user->getId()) ?>"><small><?php i18n_echo(array('en' => 'Edit', 'zh' => '编辑')) ?></small></a> /
         <a class="delete" href="<?php print_uri('admin/user/delete/' . $user->getId()); ?>"><small><?php i18n_echo(array('en' => 'Delete', 'zh' => '删除')) ?></small></a>

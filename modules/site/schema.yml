@@ -1,0 +1,23 @@
+product:
+  pk: id
+  fields:
+    id: INT NOT NULL AUTO_INCREMENT
+    title: VARCHAR(512) NOT NULL
+    description: TEXT
+    active: TINYINT(1) DEFAULT 1
+    price: DECIMAL(6,1) DEFAULT 0
+    thumbnail: VARCHAR(15)
+
+sub_product:
+  pk: id
+  fields:
+    id: INT NOT NULL AUTO_INCREMENT
+    product_id: INT NOT NULL
+    attribute: VARCHAR(32) NOT NULL
+  fks:
+    product_id:
+      foreign_key: product_id
+      references: product.id
+      on_delete: CASCADE
+      on_update: CASCADE
+    

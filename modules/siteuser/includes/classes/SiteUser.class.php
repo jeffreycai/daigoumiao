@@ -2,6 +2,21 @@
 require_once "BaseSiteUser.class.php";
 
 class SiteUser extends BaseSiteUser {
+  static function findAllWithPage($page, $entries_per_page, $order_by = null, $order = 'DESC') {
+    global $mysqli;
+    $query = "SELECT * FROM site_user LIMIT " . ($page - 1) * $entries_per_page . ", " . $entries_per_page . ($order_by ? " ORDER BY $order_by $order" : "");
+    $result = $mysqli->query($query);
+    
+    $rtn = array();
+    while ($result && $b = $result->fetch_object()) {
+      $obj= new SiteUser();
+      DBObject::importQueryResultToDbObject($b, $obj);
+      $rtn[] = $obj;
+    }
+    
+    return $rtn;
+  }
+  
   static function renderUpdateFormBackend(SiteUser $user = null, $action = '') {
     // set default action value
     if ($action != '') {

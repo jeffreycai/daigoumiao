@@ -42,7 +42,7 @@ function buffer_flush() {
           if (!empty($content) && $cache_time) {
             $url = get_request_uri(false);
             $filename = make_cache_filename($url);
-            file_put_contents(STATIC_CACHE_ROOT . DS . $filename . '_' . (time() + $cache_time), $content);
+            file_put_contents(STATIC_CACHE_DIR . DS . $filename . '_' . (time() + $cache_time), $content);
             echo $content;
           } else if (!empty($content)) {
             echo $content;

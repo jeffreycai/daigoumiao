@@ -5,30 +5,26 @@ site_user:
     email: 'jeffreycaizhenyuan@gmail.com'
     salt: 12345ytghdgtgfgf
     password: 27f9068d1ac1d4029418fcc12ef6dbef
+    created_at: 1426550854
   2:
     id: 2
     username: 'marry'
     email: 'marray@example.com'
     salt: 12345ytghdgtgfgf
     password: 27f9068d1ac1d4029418fcc12ef6dbef
+    created_at: 1426550854
   3:
     id: 3
     username: 'peter'
     email: 'peter@pan.com'
     salt: 12345ytghdgtgfgf
     password: 27f9068d1ac1d4029418fcc12ef6dbef
+    created_at: 1426550854
 
 site_permission:
   1:
     id: 1
-    name: 'Administer users'
-  2:
-    id: 2
-    name: 'Administer roles'
-  3:
-    id: 3
-    name: 'Send emails'
-
+    name: 'manage product'
 site_role:
   1:
     id: 1
@@ -45,22 +41,6 @@ site_permission_role:
     id: 1
     permission_id: 1
     role_id: 1
-  2:
-    id: 2
-    permission_id: 2
-    role_id: 1
-  3:
-    id: 3
-    permission_id: 3
-    role_id: 1
-  4:
-    id: 4
-    permission_id: 3
-    role_id: 2
-  5:
-    id: 5
-    permission_id: 3
-    role_id: 3
     
 site_user_role:
   1:

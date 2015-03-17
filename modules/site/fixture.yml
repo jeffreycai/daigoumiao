@@ -1,0 +1,8 @@
+product:
+  1:
+    id: 1
+    title: Karecare Gold 1段金装
+    description: <p>Karecare是新西兰值得信任的品牌，Gold系列是Karecare的王牌主打产品。。。</p>
+    active: 1
+    price: 26.55
+    thumbnail: 1.jpg
