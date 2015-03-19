@@ -4,27 +4,30 @@ site_user:
     username: 'jeffreycai'
     email: 'jeffreycaizhenyuan@gmail.com'
     salt: 12345ytghdgtgfgf
-    password: 27f9068d1ac1d4029418fcc12ef6dbef
+    password: 36f9c5f6816b003486f6bb340b56d605
     created_at: 1426550854
   2:
     id: 2
-    username: 'marry'
-    email: 'marray@example.com'
+    username: 'affiliator'
+    email: 'jeffrey.caizhenyuan@gmail.com'
     salt: 12345ytghdgtgfgf
-    password: 27f9068d1ac1d4029418fcc12ef6dbef
+    password: 36f9c5f6816b003486f6bb340b56d605
     created_at: 1426550854
   3:
     id: 3
-    username: 'peter'
-    email: 'peter@pan.com'
+    username: 'vendor'
+    email: 'jeffreycai.zhenyuan@gmail.com'
     salt: 12345ytghdgtgfgf
-    password: 27f9068d1ac1d4029418fcc12ef6dbef
+    password: 36f9c5f6816b003486f6bb340b56d605
     created_at: 1426550854
 
 site_permission:
   1:
     id: 1
-    name: 'manage product'
+    name: 'order products'
+  2:
+    id: 2
+    name: 'manage products'
 site_role:
   1:
     id: 1
@@ -40,6 +43,10 @@ site_permission_role:
   1:
     id: 1
     permission_id: 1
+    role_id: 2
+  2:
+    id: 2
+    permission_id: 2
     role_id: 1
     
 site_user_role:

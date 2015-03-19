@@ -135,10 +135,13 @@ function get_cur_page_url($with_domain = false) {
  * @param type $current_url
  * @param type $class
  */
-function echo_link_active_class($active_url, $current_url, $class='active') {
-  global $conf;
-
-  if ("$active_url" == $current_url) {
+function echo_link_active_class($pattern, $current_url, $class='active') {
+  // we strip the language prefix first
+  if (preg_match('/^\/[^\.][^\.]\//', $current_url)) {
+    $current_url = substr($current_url, 3);
+  }
+  $current_url = trim($current_url, "/");
+  if (preg_match($pattern, $current_url)) {
     echo " class='$class' ";
   }
 }

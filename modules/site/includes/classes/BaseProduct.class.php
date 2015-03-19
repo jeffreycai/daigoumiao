@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `title` VARCHAR(512) NOT NULL ,
   `description` TEXT ,
-  `active` TINYINT(1) ,
+  `active` TINYINT(1) DEFAULT 1 ,
   `price` DECIMAL(6,1) DEFAULT 0 ,
   `thumbnail` VARCHAR(15) ,
   PRIMARY KEY (`id`)

@@ -1,0 +1,11 @@
+.ibox.product {
+  background-color: #FFF;
+}
+.ibox.product .ibox-content {
+  padding: 10px 5px 5px 5px;
+}
+.ibox.product .ibox-content .title {
+  height: 34px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}

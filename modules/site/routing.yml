@@ -5,3 +5,108 @@ routing:
     i18n: 1
     controller: site/index
     static_cache: 9999
+    
+  panel_dashboard:
+    path: ^\/panel\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/panel/dashboard
+  panel_affiliator_order:
+    path: ^\/panel\/affiliator\/order\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/panel/order
+  panel_user_profile:
+    path: ^\/panel\/user\/profile\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/panel/user/profile
+  panel_admin_product_list:
+    path: ^\/panel\/admin\/product\/list\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/panel/admin/product_list
+  panel_admin_product_add:
+    path: ^\/panel\/admin\/product\/add\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/panel/admin/product_add
+  panel_admin_product_edit:
+    path: ^\/panel\/admin\/product\/(\d+)\/edit\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/panel/admin/product_edit
+    
+
+
+assets:
+  frontend:
+    css:
+      # bootstrap
+      bootstrap:
+        path: .?
+        position: top
+        weight: 10
+#        source: //maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css
+        source: site/assets/css/bootstrap.min.css
+      # fontawesome
+      fontawesome:
+        path: .?
+        position: top
+        weight: 20
+        source: //maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css
+      # toastr: notification
+      toastr:
+        path: .?
+        position: top
+        weight: 30
+        source: site/assets/css/plugins/toastr/toastr.min.css
+      # pretty checkbox
+#      icheck:
+#        path: .?
+#        position: top
+#        weight: 40
+#        source: site/assets/css/plugins/iCheck/custom.css
+      # global default
+      default_style:
+        path: .?
+        position: top
+        weight: 290
+        source: site/assets/css/style.css
+      # global custom
+      panel_style:
+        path: .?
+        position: top
+        weight: 300
+        source: site/assets/panel_style.css
+        
+        
+        
+    js:
+      bootstrap:
+        path: .?
+        position: bottom
+        weight: 10
+#        source: //netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js
+        source: site/assets/js/bootstrap.min.js
+      metisMenu:
+        path: .?
+        position: bottom
+        weight: 20
+        source: core/assets/js/metisMenu/jquery.metisMenu.js
+      toastr:
+        path: .?
+        position: bottom
+        weight: 30
+        source: site/assets/js/plugins/toastr/toastr.min.js
+#      icheck:
+#        path: .?
+#        position: bottom
+#        weight: 40
+#        source: site/assets/js/plugins/iCheck/icheck.min.js
+      panel_script:
+        path: .?
+        position: bottom
+        weight: 300
+        source: site/assets/panel_script.js
+        

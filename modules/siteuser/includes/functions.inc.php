@@ -19,6 +19,12 @@ function require_role($roles) {
   }
 }
 
+function require_login() {
+  if (!is_login()) {
+    HTML::forward('users');
+  }
+}
+
 function has_permission($permissions) {
   $user = SiteUser::getCurrentUser();
   return $user->hasPermission($permissions);

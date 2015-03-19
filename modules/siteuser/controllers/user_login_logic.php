@@ -72,4 +72,4 @@ if (!empty($referer)
 ) {
   HTML::forward($referer);
 }
-HTML::forward('');
+HTML::forward('panel');
