@@ -177,7 +177,10 @@ abstract class DBObject {
     $query .= ";";
 
     $result = $mysqli->query($query);
-    return $result->num_rows != 0;
+    if ($result !== false && $result->num_rows != 0) {
+      return true;
+    }
+    return false;
   }
   
   /**

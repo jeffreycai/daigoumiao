@@ -7,21 +7,20 @@ class Product extends BaseProduct {
   }
   
   public function renderUpdateForm($action = '') {
+    $settings = Vars::getSettings();
+    
     // prepopulate vars
     $pid = $this->getId();
     $title = isset($_POST['title']) ? strip_tags($_POST['title']) : $this->getTitle();
     $description = isset($_POST['description']) ? $_POST['description'] : $this->getDescription();
     $active = isset($_POST['active']) ? true : ($this->getActive() ? true : false);
     $price = isset($_POST['price']) ? strip_tags($_POST['price']) : $this->getPrice();
-    $thumbnail = $this->getThumbnailUrl();
+    $thumbnail = $this->getThumbnail() ? $this->getThumbnailUrl() : null;
     
     // register assets
     // icheck
     HTML::registerHeaderUpper('<link href="/'.get_sub_root().'modules/site/assets/css/plugins/iCheck/custom.css" rel="stylesheet">');
     HTML::registerFooterUpper('<script src="/'.get_sub_root().'modules/site/assets/js/plugins/iCheck/icheck.min.js"></script>');
-    // image cropper
-    HTML::registerFooterUpper('<script src="/'.get_sub_root().'modules/site/assets/js/plugins/cropper/cropper.min.js"></script>');
-    HTML::registerHeaderUpper('<link href="/'.get_sub_root().'modules/site/assets/css/plugins/cropper/cropper.min.css" rel="stylesheet">');
     
     
     $rtn = Message::renderMessages() . '
@@ -34,32 +33,21 @@ class Product extends BaseProduct {
     <label class="control-label" for="price">价格</label>
     <input id="price" name="price" class="form-control" type="text" value="'.$price.'" />
   </div>
-  <div class="form-group">
-    <label class="control-label">缩略图</label>
 
 
-<div class="row" id="makeThumbnail">
-  <div class="col-lg-3 col-md-4 col-sm-6">
-    <div class="image-crop">
-      <img src="/files/avatars/default.gif" />
-    </div>
-    <div>
-      <h4>缩略图预览</h4>
-      <div style="width: 150px; height: 150px;" class="img-preview img-preview-sm"></div>
-      <div class="btn-group">
-        <label title="Upload image file" for="inputImage" class="btn btn-primary">
-          <input type="file" accept="image/*" name="file" id="inputImage" class="hide">
-          上传新图片
-        </label>
-        <label title="Donload image" id="download" class="btn btn-primary">Download</label>
-      </div>
-    </div>
+  <div class="form-group" id="form-field-thumbnail">
+    <label for="thumbnail">缩略图</label>
+    '.( $pid ? "<div><img src='" . $thumbnail . "' style='cursor: pointer;' /></div>" : '').'
+    <input type="file" id="thumbnail" name="thumbnail"' .($pid ?  ' style="display: none;"' : '') . ' required="required" />
+    <small>'.  i18n(array(
+        'en' => 'Max image file size: ' . round($settings['profile']['avatar_max_size'] / 1000000, 1) . 'MB',
+        'zh' => '最大图片上传尺寸： ' . round($settings['profile']['avatar_max_size'] / 1000000, 1) . 'MB'
+    )).'</small>
   </div>
-</div>
 
 
-  </div>
   <div class="form-group">
+    <label class="control-label">是否上架</label>
     <div class="checkbox i-checks">
       <label class="control-label">
         <input type="checkbox" value="1" name="active" '.($active ? 'checked="checked"' : '').' /> <i></i> 上架?
@@ -67,7 +55,8 @@ class Product extends BaseProduct {
     </div>
   </div>
   <div class="form-group">
-    <input type="submit" name="submit" value="'.(empty($pid) ? '添加' : '更新').'" class="btn btn-sm btn-primary" />
+    <input type="submit" name="submit" value="'.(empty($pid) ? '添加' : '更新').'" class="btn btn-sm btn-primary" />&nbsp;&nbsp;&nbsp;
+    <a href="'.uri('panel/admin/product/'.$this->getId().'/delete').'" onclick="return confirm(\'删除产品?\');">删除</a>
   </div>
   
   <input type="hidden" name="pid" value="'.$pid.'" />
@@ -76,50 +65,40 @@ class Product extends BaseProduct {
 
 
 <script type="text/javascript">
-jQuery(function(){
-  var $image = $(".image-crop > img");
-
-  $($image).cropper({
-      aspectRatio: 1,
-      preview: ".img-preview",
-      done: function(data) {
-          // Output the result data for cropping image.
-      }
+  $("#form-field-thumbnail img").click(function(){
+    $("#thumbnail").trigger("click");
   });
-  var $inputImage = $("#inputImage");
-  if (window.FileReader) {
-      $inputImage.change(function() {
-          var fileReader = new FileReader(),
-                  files = this.files,
-                  file;
-
-          if (!files.length) {
-              return;
-          }
-
-          file = files[0];
-
-          if (/^image\/\w+$/.test(file.type)) {
-              fileReader.readAsDataURL(file);
-              fileReader.onload = function () {
-                  $inputImage.val("");
-                  $image.cropper("reset", true).cropper("replace", this.result);
-              };
-          } else {
-              showMessage("Please choose an image file.");
-          }
-      });
-  } else {
-      $inputImage.addClass("hide");
-  }
-  
-  $("#download").click(function() {
-      window.open($image.cropper("getDataURL"));
+  $("#thumbnail").change(function(){
+    //$("#form-field-thumbnail img").fadeOut();
+    $(this).fadeIn();
   });
-});
 </script>
 
 ';
+    return $rtn;
+  }
+  
+  public function delete() {
+    unlink(PRODUCT_THUMBNAIL_DIR . '/' . $this->getThumbnail());
+    foreach ($this->getSubProducts() as $sub_product) {
+      $sub_product->delete();
+    }
+    return parent::delete();
+  }
+  
+  public function getSubProducts($active = null) {
+    global $mysqli;
+    $query = "SELECT * FROM sub_product WHERE product_id=" . $this->getId();
+    if ($active) {
+      $query .= " AND active=".$active;
+    }
+    $result = $mysqli->query($query);
+    $rtn  = array();
+    while($record = $result->fetch_object()) {
+      $sub_product = new SubProduct();
+      DBObject::importQueryResultToDbObject($record, $sub_product);
+      $rtn[] = $sub_product;
+    }
     return $rtn;
   }
 }

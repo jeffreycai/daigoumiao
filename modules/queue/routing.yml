@@ -1,0 +1,6 @@
+routing:
+  queue_list:
+    path: ^\/admin\/queue\/list(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: queue/backend/list

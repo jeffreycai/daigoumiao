@@ -6,6 +6,8 @@ include_once MODULESROOT . DS . 'core' . DS . 'includes' . DS . 'classes' . DS .
  * - id
  * - product_id
  * - attribute
+ * - price
+ * - active
  */
 class BaseSubProduct extends DBObject {
   /**
@@ -44,6 +46,18 @@ class BaseSubProduct extends DBObject {
    public function getAttribute() {
      return $this->getDbFieldAttribute();
    }
+   public function setPrice($var) {
+     $this->setDbFieldPrice($var);
+   }
+   public function getPrice() {
+     return $this->getDbFieldPrice();
+   }
+   public function setActive($var) {
+     $this->setDbFieldActive($var);
+   }
+   public function getActive() {
+     return $this->getDbFieldActive();
+   }
 
   
   
@@ -67,6 +81,8 @@ CREATE TABLE IF NOT EXISTS `sub_product` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `product_id` INT NOT NULL ,
   `attribute` VARCHAR(32) NOT NULL ,
+  `price` DECIMAL(6,1) DEFAULT NULL ,
+  `active` TINYINT(1) DEFAULT 1 ,
   PRIMARY KEY (`id`)
  ,
 INDEX `fk-sub_product-product_id-idx` (`product_id` ASC),

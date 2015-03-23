@@ -36,6 +36,16 @@ routing:
     isSecure: 0
     i18n: 1
     controller: site/panel/admin/product_edit
+  panel_admin_product_delelte:
+    path: ^\/panel\/admin\/product\/(\d+)\/delete\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/panel/admin/product_delete
+  panel_admin_subproduct_edit:
+    path: ^\/panel\/admin\/product\/(\d+)\/list\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/panel/admin/subproduct_edit
     
 
 
@@ -61,12 +71,6 @@ assets:
         position: top
         weight: 30
         source: site/assets/css/plugins/toastr/toastr.min.css
-      # pretty checkbox
-#      icheck:
-#        path: .?
-#        position: top
-#        weight: 40
-#        source: site/assets/css/plugins/iCheck/custom.css
       # global default
       default_style:
         path: .?
@@ -99,11 +103,11 @@ assets:
         position: bottom
         weight: 30
         source: site/assets/js/plugins/toastr/toastr.min.js
-#      icheck:
+#      moltin:
 #        path: .?
-#        position: bottom
-#        weight: 40
-#        source: site/assets/js/plugins/iCheck/icheck.min.js
+#        position: top
+#        weight: 10
+#        source: //js.moltin.com/v1
       panel_script:
         path: .?
         position: bottom
