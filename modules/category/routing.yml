@@ -1,0 +1,16 @@
+routing:
+  category_list:
+    path: ^\/admin\/category\/list(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: category/backend/list
+  category_create:
+    path: ^\/admin\/category\/create(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: category/backend/create
+  category_edit:
+    path: ^\/admin\/category\/edit\/(\d+)$
+    isSecure: 1
+    i18n: 1
+    controller: category/backend/edit

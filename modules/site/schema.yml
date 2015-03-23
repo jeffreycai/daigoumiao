@@ -23,3 +23,30 @@ sub_product:
       on_delete: CASCADE
       on_update: CASCADE
     
+    
+item:
+  pk: id
+  fields:
+    id: INT NOT NULL AUTO_INCREMENT
+    title_en: VARCHAR(512)
+    title_zh: VARCHAR(512)
+    thumbnail: VARCHAR(256)
+    price: VARCHAR(6)
+    
+item_category:
+  pk: id
+  fields:
+    id: INT NOT NULL AUTO_INCREMENT
+    item_id: INT
+    category_id: INT
+  fks:
+    category_id:
+      foreign_key: category_id
+      references: category.id
+      on_delete: CASCADE
+      on_update: CASCADE
+    item_id:
+      foreign_key: item_id
+      references: item.id
+      on_delete: CASCADE
+      on_update: CASCADE

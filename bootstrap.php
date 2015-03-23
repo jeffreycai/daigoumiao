@@ -21,6 +21,8 @@ if (isset($custom_modules)) {
       'mail',
       'crawler',
       'queue',
+      'spider_chemistwarehouse',
+      'category'
   );
 
 }

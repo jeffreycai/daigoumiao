@@ -1,0 +1,5 @@
+category:
+  pk: id
+  fields:
+    id: INT NOT NULL AUTO_INCREMENT
+    name: VARCHAR(20)

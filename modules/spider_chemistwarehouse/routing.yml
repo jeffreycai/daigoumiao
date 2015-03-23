@@ -1,0 +1,11 @@
+routing:
+  chemist_warehouse_url_list:
+    path: ^\/admin\/cw\/url\-list\/?$
+    isSecure: 1
+    i18n: 1
+    controller: spider_chemistwarehouse/backend/url_list
+  chemist_warehouse_product_crawl_queue:
+    path: ^\/admin\/cw\/product\/queue\/?$
+    isSecure: 1
+    i18n: 0
+    controller: spider_chemistwarehouse/backend/product_queue

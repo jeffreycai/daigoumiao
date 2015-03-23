@@ -1,0 +1,8 @@
+cw_url_list:
+  pk: id
+  fields:
+    id: INT NOT NULL AUTO_INCREMENT
+    url: VARCHAR(255) NOT NULL
+    categories: VARCHAR(25)
+    
+    
