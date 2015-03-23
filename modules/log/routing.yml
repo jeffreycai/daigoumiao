@@ -1,0 +1,6 @@
+routing:
+  log:
+    path: ^\/admin\/log\/list(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: log/backend/list
