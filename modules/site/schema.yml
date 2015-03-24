@@ -28,10 +28,14 @@ item:
   pk: id
   fields:
     id: INT NOT NULL AUTO_INCREMENT
+    original_id: INT
     title_en: VARCHAR(512)
     title_zh: VARCHAR(512)
     thumbnail: VARCHAR(256)
     price: VARCHAR(6)
+    updated_at: INT
+  indexes:
+    - `item_original_id` (`original_id` ASC)
     
 item_category:
   pk: id

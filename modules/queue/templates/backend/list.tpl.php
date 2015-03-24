@@ -16,18 +16,25 @@ $end_entry = min(array($total, $current_page*$backend_perpage));
         <div class="panel-heading"><?php i18n_echo(array('en' => 'Task list', 'zh' => '任务列表')) ?></div>
         <div class="panel-body">
           
+          <div class="form-group">
+            <a href="<?php echo uri('admin/queue/') ?>"></a>
+          </div>
+          
         <?php echo Message::renderMessages(); ?>
           
 <table class="table table-striped table-bordered table-hover dataTable no-footer">
   <thead>
       <tr role="row">
         <th><?php i18n_echo(array('en' => 'Status', 'zh' => '状态')) ?></th>
+        <th><?php i18n_echo(array('en' => 'Priority', 'zh' => '优先级')) ?></th>
         <th><?php i18n_echo(array('en' => 'Status Info', 'zh' => '状态信息')) ?></th>
         <th><?php i18n_echo(array('en' => 'Created', 'zh' => '创建时间')) ?></th>
         <th><?php i18n_echo(array('en' => 'Started', 'zh' => '开始时间')) ?></th>
         <th><?php i18n_echo(array('en' => 'Finished', 'zh' => '结束时间')) ?></th>
+        <th><?php i18n_echo(array('en' => 'Time consumed', 'zh' => '耗时')) ?></th>
         <th><?php i18n_echo(array('en' => 'Function', 'zh' => '函数')) ?></th>
         <th><?php i18n_echo(array('en' => 'Description', 'zh' => '描述')) ?></th>
+        <th><?php i18n_echo(array('en' => 'Actions', 'zh' => '操作')) ?></th>
       </tr>
   </thead>
   <tbody>
@@ -58,12 +65,20 @@ $end_entry = min(array($total, $current_page*$backend_perpage));
         endswitch; ?>
         <span class="label label-<?php echo $class ?>"><?php echo $text ?></span>
       </td>
+      <td><?php echo $q->getPriorityLiteral() ?></td>
       <td><?php echo $q->getStatusInfo() ?></td>
-      <td><?php echo date('y-m-d H:i:s', $q->getCreatedAt()) ?></td>
-      <td><?php echo date('y-m-d H:i:s', $q->getStartedAt()) ?></td>
-      <td><?php echo date('y-m-d H:i:s', $q->getFinishedAt()) ?></td>
+      <td><?php echo !($q->getCreatedAt()) ? 'Null' : date('y-m-d H:i:s', $q->getCreatedAt()) ?></td>
+      <td><?php echo !($q->getStartedAt()) ? 'Null' : date('y-m-d H:i:s', $q->getStartedAt()) ?></td>
+      <td><?php echo !($q->getFinishedAt()) ? 'Null' : date('y-m-d H:i:s', $q->getFinishedAt()) ?></td>
+      <td><?php echo $q->getStartedAt() && $q->getFinishedAt() ? ($q->getFinishedAt() - $q->getStartedAt()) : '' ?></td>
       <td><?php echo $q->getFunction() ?></td>
       <td><?php echo $q->getDescription() ?></td>
+      <td>
+        <div class="btn-group">
+          <a href="<?php echo uri('admin/queue/'.$q->getId().'/run') ?>" class='btn btn-sm btn-primary'><i class='fa fa-play-circle-o'></i></a>
+          <a href="<?php echo uri('admin/queue/'.$q->getId().'/delete') ?>" class="btn btn-sm btn-danger" onclick="return confirm('Sure to delete?');"><i class="fa fa-remove"></i></a>
+        </div>
+      </td>
     </tr>
     <?php endforeach; ?>
   </tbody>

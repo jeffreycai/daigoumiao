@@ -4,3 +4,13 @@ routing:
     isSecure: 1
     i18n: 1
     controller: queue/backend/list
+  queue_delete:
+    path: ^\/admin\/queue\/(\d+)\/delete(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: queue/backend/delete
+  queue_run:
+    path: ^\/admin\/queue\/(\d+)\/run(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: queue/backend/run

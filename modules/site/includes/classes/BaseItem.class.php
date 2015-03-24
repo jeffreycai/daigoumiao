@@ -4,10 +4,12 @@ include_once MODULESROOT . DS . 'core' . DS . 'includes' . DS . 'classes' . DS .
 /**
  * DB fields
  * - id
+ * - original_id
  * - title_en
  * - title_zh
  * - thumbnail
  * - price
+ * - updated_at
  */
 class BaseItem extends DBObject {
   /**
@@ -33,6 +35,12 @@ class BaseItem extends DBObject {
    }
    public function getId() {
      return $this->getDbFieldId();
+   }
+   public function setOriginalId($var) {
+     $this->setDbFieldOriginal_id($var);
+   }
+   public function getOriginalId() {
+     return $this->getDbFieldOriginal_id();
    }
    public function setTitleEn($var) {
      $this->setDbFieldTitle_en($var);
@@ -70,6 +78,12 @@ class BaseItem extends DBObject {
    public function getPrice() {
      return $this->getDbFieldPrice();
    }
+   public function setUpdatedAt($var) {
+     $this->setDbFieldUpdated_at($var);
+   }
+   public function getUpdatedAt() {
+     return $this->getDbFieldUpdated_at();
+   }
 
   
   
@@ -91,12 +105,15 @@ class BaseItem extends DBObject {
       return $mysqli->query('
 CREATE TABLE IF NOT EXISTS `item` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `original_id` INT ,
   `title_en` VARCHAR(512) ,
   `title_zh` VARCHAR(512) ,
   `thumbnail` VARCHAR(256) ,
   `price` VARCHAR(6) ,
+  `updated_at` INT ,
   PRIMARY KEY (`id`)
-)
+ ,
+INDEX `item_original_id` (`original_id` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_general_ci;

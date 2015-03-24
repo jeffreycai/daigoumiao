@@ -19,15 +19,17 @@ if (isset($_POST['submit'])) {
       $categories[$c->getName()] = $c->getId();
     }
     $cats = trim($_POST['categories'][$idx], ', ');
-    $cats = explode(',', $cats);
-    $rtn = array();
-    foreach ($cats as $cat) {
-      $cat = trim($cat);
-      $cid = $categories[$cat];
-      $rtn[] = $cid;
-    }
-    if (!empty($rtn)) {
-      $list->setCategories(implode(',', $rtn));
+    if (!empty($cats)) {
+      $cats = explode(',', $cats);
+      $rtn = array();
+      foreach ($cats as $cat) {
+        $cat = trim($cat);
+        $cid = $categories[$cat];
+        $rtn[] = $cid;
+      }
+      if (!empty($rtn)) {
+        $list->setCategories(implode(',', $rtn));
+      }
     }
     $list->save();
   }
@@ -43,10 +45,13 @@ preg_match_all('/\d+px;"><a href="category\.asp\?id=\d+&cname=[^"]+" >[^<]+<\/a>
 $urls = array();
 $urls_straight = array(); 
 foreach (CwUrlList::findAll() as $url) {
+  $categories = $url->getCategories();
   $cats = array();
-  $ts = explode(',', $url->getCategories());
-  foreach ($ts as $token) {
-    $cats[] = Category::findById(trim($token))->getName();
+  if (!empty($categories)) {
+    $ts = explode(',', $categories);
+    foreach ($ts as $token) {
+      $cats[] = Category::findById(trim($token))->getName();
+    }
   }
   $urls_straight[$url->getUrl()] = implode(', ', $cats);
 }
