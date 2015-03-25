@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `queue` (
   `status_info` TEXT ,
   `arguments` TEXT ,
   `function` VARCHAR(20) ,
-  `type` VARCHAR(10) NOT NULL ,
+  `type` VARCHAR(15) NOT NULL ,
   `priority` TINYINT DEFAULT 0 ,
   `description` TEXT ,
   PRIMARY KEY (`id`)

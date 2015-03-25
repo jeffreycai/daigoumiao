@@ -17,7 +17,13 @@ $end_entry = min(array($total, $current_page*$backend_perpage));
         <div class="panel-body">
           
           <div class="form-group">
-            <a href="<?php echo uri('admin/queue/') ?>"></a>
+            <form action="<?php echo uri('admin/queue/empty', false) ?>" method="POST">
+              <input type="text" name="type" placeholder="<?php echo i18n(array('en' => 'Type', 'zh' => '类型')) ?>" />
+              <button type="submit" class="btn btn-sm btn-default" href="<?php echo uri('admin/queue/') ?>" onclick="return confirm('Are you sure to purge queue?');"><?php echo i18n(array(
+                'en' => 'Purge',
+                'zh' => '清除'
+            )) ?></button>
+            </form>
           </div>
           
         <?php echo Message::renderMessages(); ?>
@@ -28,6 +34,7 @@ $end_entry = min(array($total, $current_page*$backend_perpage));
         <th><?php i18n_echo(array('en' => 'Status', 'zh' => '状态')) ?></th>
         <th><?php i18n_echo(array('en' => 'Priority', 'zh' => '优先级')) ?></th>
         <th><?php i18n_echo(array('en' => 'Status Info', 'zh' => '状态信息')) ?></th>
+        <th><?php i18n_echo(array('en' => 'Type', 'zh' => '类型')) ?></th>
         <th><?php i18n_echo(array('en' => 'Created', 'zh' => '创建时间')) ?></th>
         <th><?php i18n_echo(array('en' => 'Started', 'zh' => '开始时间')) ?></th>
         <th><?php i18n_echo(array('en' => 'Finished', 'zh' => '结束时间')) ?></th>
@@ -67,6 +74,7 @@ $end_entry = min(array($total, $current_page*$backend_perpage));
       </td>
       <td><?php echo $q->getPriorityLiteral() ?></td>
       <td><?php echo $q->getStatusInfo() ?></td>
+      <td><?php echo $q->getType() ?></td>
       <td><?php echo !($q->getCreatedAt()) ? 'Null' : date('y-m-d H:i:s', $q->getCreatedAt()) ?></td>
       <td><?php echo !($q->getStartedAt()) ? 'Null' : date('y-m-d H:i:s', $q->getStartedAt()) ?></td>
       <td><?php echo !($q->getFinishedAt()) ? 'Null' : date('y-m-d H:i:s', $q->getFinishedAt()) ?></td>

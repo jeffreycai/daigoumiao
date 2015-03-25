@@ -18,4 +18,12 @@ category:
   3:
     id: 3
     name: 美容化妆
-    
+  4:
+    id: 4
+    name: 健康食品
+  5:
+    id: 5
+    name: 母婴
+  6:
+    id: 6
+    name: 私密用品

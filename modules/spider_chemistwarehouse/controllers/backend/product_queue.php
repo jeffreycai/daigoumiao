@@ -26,7 +26,7 @@ foreach (CwUrlList::findAll() as $url) {
     
     // ok, we now crawl those product pages
     for ($i = 0; $i < $page_num; $i++) {
-      Queue::addToQueque('Product list', 'CW crawl product list page', 'cw_crawl_product', array(
+      Queue::addToQueque('CW product list', 'CW crawl product list page', 'cw_crawl_product', array(
           'url' => 'http://www.chemistwarehouse.com.au/' . $url->getUrl() . '&perPage=120&page=' . ($i+1),
           'categories' => $url->getCategories()
       ), Queue::PRIORITY_HIGH);

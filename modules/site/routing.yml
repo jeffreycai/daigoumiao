@@ -83,6 +83,11 @@ assets:
         position: top
         weight: 300
         source: site/assets/panel_style.css
+      site_style:
+        path: .?
+        position: top
+        weight: 400
+        source: site/assets/site_style.css
         
         
         

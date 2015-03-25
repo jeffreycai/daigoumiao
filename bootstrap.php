@@ -15,14 +15,14 @@ if (isset($custom_modules)) {
 //      'static_cache',
       'database',
       'form',
+      'category',
       'site',
-      'siteuser',
-      'siteuser_profile',
+//      'siteuser',
+//      'siteuser_profile',
       'mail',
       'crawler',
       'queue',
-      'spider_chemistwarehouse',
-      'category'
+      'spider_chemistwarehouse'
   );
 
 }

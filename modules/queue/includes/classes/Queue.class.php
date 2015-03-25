@@ -56,8 +56,7 @@ class Queue extends BaseQueue {
   static function fetchAndProceed($type = null) {
     global $mysqli;
     $type_condition = is_null($type) ? '' : " AND type='" . $type . "'";
-    $id_condition = is_null($id) ? '' : " AND id='" . $id . "'";
-    $query = "SELECT * FROM queue WHERE status=" . self::STATUS_QUEUED . $type_condition . $id_condition . " ORDER BY priority DESC, created_at ASC LIMIT 1";
+    $query = "SELECT * FROM queue WHERE status=" . self::STATUS_QUEUED . $type_condition . " ORDER BY priority DESC, created_at ASC LIMIT 1";
     $result = $mysqli->query($query);
     if ($result && $obj = $result->fetch_object()) {
       // fetch the thread, flag it as in progess
