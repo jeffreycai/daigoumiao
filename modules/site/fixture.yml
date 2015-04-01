@@ -7,23 +7,15 @@ product:
     price: 26.55
     thumbnail: 1.jpg
 
-
-category:
+vendor:
   1:
     id: 1
-    name: 保健品
-  2:
-    id: 2
-    name: 功能药品
-  3:
-    id: 3
-    name: 美容化妆
-  4:
-    id: 4
-    name: 健康食品
-  5:
-    id: 5
-    name: 母婴
-  6:
-    id: 6
-    name: 私密用品
+    name: n/a
+
+brand:
+  1:
+    id: 1
+    name: n/a
+
+
+

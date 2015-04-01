@@ -8,6 +8,8 @@ $messages = array();
 $queued_num = 0;
 foreach (CwUrlList::findAll() as $url) {
   try {
+    $brand_id = $url->getBrandId();
+
     // how many product list pages do we need to crawl?
     $html = file_get_contents('http://www.chemistwarehouse.com.au/' . $url->getUrl() . '&perPage=120');
     if (!$html) {
@@ -26,9 +28,12 @@ foreach (CwUrlList::findAll() as $url) {
     
     // ok, we now crawl those product pages
     for ($i = 0; $i < $page_num; $i++) {
+      
+      
       Queue::addToQueque('CW product list', 'CW crawl product list page', 'cw_crawl_product', array(
           'url' => 'http://www.chemistwarehouse.com.au/' . $url->getUrl() . '&perPage=120&page=' . ($i+1),
-          'categories' => $url->getCategories()
+          'tags' => $url->getTags(),
+          'brand' => empty($brand_id) ? null : $brand_id,
       ), Queue::PRIORITY_HIGH);
       $queued_num++;
     }

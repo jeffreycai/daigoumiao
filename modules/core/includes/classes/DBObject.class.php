@@ -212,6 +212,17 @@ abstract class DBObject {
     return $mysqli->query($query);
   }
   
+  public function isNew() {
+    $rtn = true;
+
+    foreach ($this->primary_key as $field) {
+      $val = $this->{"get".self::tableNameToClassName($field)}();
+      $rtn &= is_null($val);
+    }
+ 
+    return $rtn;
+  }
+  
   /**
    * prepare a value for sql statuement
    * 

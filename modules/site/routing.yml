@@ -5,6 +5,32 @@ routing:
     i18n: 1
     controller: site/index
     static_cache: 9999
+  tag:
+    path: ^\/items\/tag\/(\d+)\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/tag
+  goto:
+    path: ^\/goto\/(\d+)\/?$
+    isSecure: 0
+    i18n: 0
+    controller: site/goto
+  search:
+    path: ^\/items\/search\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/search
+    
+  admin_item_list:
+    path: ^\/admin\/items\/list\/?$
+    isSecure: 1
+    i18n: 1
+    controller: site/backend/item_list
+  admin_item_update:
+    path: ^\/admin\/item\/(\d+)\/update
+    isSecure: 1
+    i18n: 0
+    controller: site/backend/item_update
     
   panel_dashboard:
     path: ^\/panel\/?$

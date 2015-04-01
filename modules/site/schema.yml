@@ -34,19 +34,34 @@ item:
     thumbnail: VARCHAR(256)
     price: VARCHAR(6)
     updated_at: INT
+    vendor_id: INT DEFAULT 1
+    brand_id: INT DEFAULT 1
+  fks:
+    vendor_id:
+      foreign_key: vendor_id
+      references: vendor.id
+      on_delete: CASCADE
+      on_update: CASCADE
+    brand_id:
+      foreign_key: brand_id
+      references: brand.id
+      on_delete: CASCADE
+      on_update: CASCADE
   indexes:
     - `item_original_id` (`original_id` ASC)
     
-item_category:
+
+    
+item_tag:
   pk: id
   fields:
     id: INT NOT NULL AUTO_INCREMENT
     item_id: INT
-    category_id: INT
+    tag_id: INT
   fks:
-    category_id:
-      foreign_key: category_id
-      references: category.id
+    tag_id:
+      foreign_key: tag_id
+      references: tag.id
       on_delete: CASCADE
       on_update: CASCADE
     item_id:

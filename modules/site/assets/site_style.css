@@ -11,9 +11,20 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
+.label-light {
+  background-color: #AAA;
+  color: #EEE;
+}
 .thumb img {
   width: 100%;
 }
+#body .block {
+  margin-top: 15px;
+}
+.flex-direction-nav a {
+  height: 48px;
+}
+/** topnav **/
 #topnav {
   background-color: #293846;
 }
@@ -48,31 +59,82 @@ body {
 #topnav ul li li a:hover {
   color: #333;
 }
+
+/** block-hero **/
+.hero {
+  background-color: #293846;
+  text-align: center;
+  color: #FFF;
+  padding: 40px 0 60px 0;
+}
+.hero h1.subline {
+  font-size: 1.3em;
+}
+.hero p {
+  color: #DDD;
+}
+#hero-home .logo {
+  margin-bottom: 20px; 
+}
+#hero-home .logo img {
+  width: 80px;
+  height: 80px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+}
+
+/** header **/
 #header {
   background: #F0F0F0;
   border-bottom: 1px solid #dcdcdc;
   padding: 15px 0;
 }
+#header h2 {
+  margin-top: 13px;
+}
 #search-form {
   margin-top: 6px;
 }
-#body .block {
-  margin-top: 15px;
-}
+
+/** block-homepage-slideshow **/
 #block-homepage-slideshow h2 {
   font-size: 0.9em;
   font-weight: bold;
   margin: 0px 0px 5px 0px;
   clear: both;
 }
-.flex-direction-nav a {
-  height: 48px;
-}
-#block-homepage-slideshow .simple-tag {
+#block-homepage-slideshow .simple_tag {
   padding: 1px 6px;
+  font-size: 0.9em;
+}
+
+/** block-search-box **/
+#block-search-box .input-group {
+  width: 100%;
+}
+#block-search-box .input-group i {
+  position: absolute;
+  right: 14px;
+  top: 10px;
+  z-index: 5;
+  color: #AAA;
+}
+#block-search-box .input-group i:hover {
+  cursor: pointer;
+}
+
+/** block-items **/
+#block-items h2 {
+  margin-top: 0px;
 }
 .card {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+}
+.card:hover {
+  border-color: #f04848;
+  box-shadow: 0 2px 5px #ccc;
 }
 .card h3 {
   font-size: 1em;
@@ -83,21 +145,47 @@ body {
 .card .thumb {
   position: relative;
 }
-.card .thumb .rmb {
+.card .thumb .vendor {
   position: absolute;
   opacity: 0.8;
   filter: alpha(opacity=80);
   bottom: 10px;
-  left: 10px;
-  font-size: 1.1em;
+  right: 10px;
+  font-size: 0.8em;
   padding: 5px;
 }
-.card .meta {
-  text-align: right;
-  font-size: 0.9em;
+.card .price {
+  color: #d62222;
+  font-weight: bold;
+}
+.card .actions .btn {
+  float: right;
 }
 .card .info {
-  color: #888;
+  color: #999;
   font-size: 0.8em;
-  
+  margin-bottom: 10px;
+}
+.card .info h4 {
+  margin-bottom: 0px;
+  font-size: 0.9em;
+}
+.card .info .title-en {
+  height: 3em;
+  overflow: hidden;
+}
+
+/** block-taxonomy-nav **/
+#block-taxonomy-nav .panel-heading,
+#block-taxonomy-nav .panel-body {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+/** block-footer **/
+#block-footer {
+  background-color: #333333;
+  padding: 30px 0px;
+  color: #999;
+  font-size: 0.9em;
 }

@@ -3,6 +3,8 @@ cw_url_list:
   fields:
     id: INT NOT NULL AUTO_INCREMENT
     url: VARCHAR(255) NOT NULL
-    categories: VARCHAR(25)
+    tags: VARCHAR(25)
+    brand_id: INT
+    vendor_id: INT
     
     

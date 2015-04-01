@@ -14,23 +14,47 @@ if (isset($_POST['submit'])) {
     $list->setUrl($url);
 //    $list->save();
     
-    $categories = array();
-    foreach (Category::findAll() as $c) {
-      $categories[$c->getName()] = $c->getId();
+    // save tags
+    $tags = array();
+    foreach (Tag::findAll() as $c) {
+      $tags[$c->getName()] = $c->getId();
     }
-    $cats = trim($_POST['categories'][$idx], ', ');
-    if (!empty($cats)) {
-      $cats = explode(',', $cats);
+    $ts = trim($_POST['tags'][$idx], ', ');
+    if (!empty($ts)) {
+      $ts = explode(',', $ts);
       $rtn = array();
-      foreach ($cats as $cat) {
-        $cat = trim($cat);
-        $cid = $categories[$cat];
+      foreach ($ts as $t) {
+        $t = trim($t);
+        if (array_key_exists($t, $tags)) {
+          $cid = $tags[$t];
+        } else {
+        // create a new tag if not found
+          $new_obj = new Tag();
+          $new_obj->setName($t);
+          $new_obj->save();
+          $cid = $new_obj->getId();
+        }
+        
         $rtn[] = $cid;
       }
       if (!empty($rtn)) {
-        $list->setCategories(implode(',', $rtn));
+        $list->setTags(implode(',', $rtn));
       }
     }
+    
+    // save brand
+    $brand = trim($_POST['brand'][$idx], ', ');
+    if (!empty($brand)) {
+      $b = Brand::findByName($brand);
+      // create new brand if does not exist
+      if (is_null($b)) {
+        $b = new Brand();
+        $b->setName($brand);
+        $b->save();
+      }
+      $list->setBrandId($b->getId());
+    }
+    
     $list->save();
   }
   Message::register(new Message(Message::SUCCESS, 'Base list updated'));
@@ -44,16 +68,24 @@ $tokens = array();
 preg_match_all('/\d+px;"><a href="category\.asp\?id=\d+&cname=[^"]+" >[^<]+<\/a>\&nbsp;\&nbsp;\(\d+\)/', $html, $tokens);
 $urls = array();
 $urls_straight = array(); 
+$brands = array();
 foreach (CwUrlList::findAll() as $url) {
-  $categories = $url->getCategories();
-  $cats = array();
-  if (!empty($categories)) {
-    $ts = explode(',', $categories);
-    foreach ($ts as $token) {
-      $cats[] = Category::findById(trim($token))->getName();
+  // prepare tags
+  $tags = $url->getTags();
+  $ts = array();
+  if (!empty($tags)) {
+    $tkens = explode(',', $tags);
+    foreach ($tkens as $token) {
+      $ts[] = Tag::findById(trim($token))->getName();
     }
   }
-  $urls_straight[$url->getUrl()] = implode(', ', $cats);
+  $urls_straight[$url->getUrl()] = implode(', ', $ts);
+  
+  // prepare brand
+  $brand = Brand::findById($url->getBrandId());
+  if (!is_null($brand)) {
+    $brands[$url->getUrl()] = $brand->getName();
+  }
 }
 
 $parent_node;
@@ -92,19 +124,26 @@ foreach ($tokens[0] as $token) {
 }
 
 // register jquery ui
-$categories = Category::findAll();
-$cats = array();
-foreach ($categories as $c) {
-  $cats[] = '"' . $c->getName() . "\"";
+$tags = Tag::findAll();
+$ts = array();
+foreach ($tags as $c) {
+  $ts[] = '"' . $c->getName() . "\"";
+}
+$bs = array();
+$brds = Brand::findAll();
+foreach ($brds as $b) {
+  $bs[] = '"' . $b->getName() . "\"";
 }
 HTML::registerHeaderLower('
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
- <script>
+<script>
 $(function() {
 var availableTags = [
-'.implode(",",$cats).'
+'.implode(",",$ts).'
+];
+var availableBrands = [
+'.implode(",",$bs).'
 ];
 function split( val ) {
 return val.split( /,\s*/ );
@@ -112,38 +151,72 @@ return val.split( /,\s*/ );
 function extractLast( term ) {
 return split( term ).pop();
 }
-$( ".cats" )
+$( ".tags" )
 // don\'t navigate away from the field on tab when selecting an item
-.bind( "keydown", function( event ) {
-if ( event.keyCode === $.ui.keyCode.TAB &&
-$( this ).autocomplete( "instance" ).menu.active ) {
-event.preventDefault();
-}
-})
-.autocomplete({
-minLength: 0,
-source: function( request, response ) {
-// delegate back to autocomplete, but extract the last term
-response( $.ui.autocomplete.filter(
-availableTags, extractLast( request.term ) ) );
-},
-focus: function() {
-// prevent value inserted on focus
-return false;
-},
-select: function( event, ui ) {
-var terms = split( this.value );
-// remove the current input
-terms.pop();
-// add the selected item
-terms.push( ui.item.value );
-// add placeholder to get the comma-and-space at the end
-terms.push( "" );
-this.value = terms.join( ", " );
-return false;
-}
-});
-});
+    .bind("keydown", function(event) {
+      if (event.keyCode === $.ui.keyCode.TAB &&
+              $(this).autocomplete("instance").menu.active) {
+        event.preventDefault();
+      }
+    })
+            .autocomplete({
+      minLength: 0,
+      source: function(request, response) {
+        // delegate back to autocomplete, but extract the last term
+        response($.ui.autocomplete.filter(
+                availableTags, extractLast(request.term)));
+      },
+      focus: function() {
+        // prevent value inserted on focus
+        return false;
+      },
+      select: function(event, ui) {
+        var terms = split(this.value);
+        // remove the current input
+        terms.pop();
+        // add the selected item
+        terms.push(ui.item.value);
+        // add placeholder to get the comma-and-space at the end
+        terms.push("");
+        this.value = terms.join(", ");
+        return false;
+      }
+    });
+    
+$( ".brand" )
+// don\'t navigate away from the field on tab when selecting an item
+    .bind("keydown", function(event) {
+      if (event.keyCode === $.ui.keyCode.TAB &&
+              $(this).autocomplete("instance").menu.active) {
+        event.preventDefault();
+      }
+    })
+            .autocomplete({
+      minLength: 0,
+      source: function(request, response) {
+        // delegate back to autocomplete, but extract the last term
+        response($.ui.autocomplete.filter(
+                availableBrands, extractLast(request.term)));
+      },
+      focus: function() {
+        // prevent value inserted on focus
+        return false;
+      },
+      select: function(event, ui) {
+        var terms = split(this.value);
+        // remove the current input
+        terms.pop();
+        // add the selected item
+        terms.push(ui.item.value);
+        // add placeholder to get the comma-and-space at the end
+        terms.push("");
+        this.value = terms.join(", ");
+        return false;
+      }
+    });
+
+
+  });
 </script>
 ');
 
@@ -159,7 +232,8 @@ $html->output('<div id="wrapper">');
 $html->renderOut('core/backend/header');
 $html->renderOut('spider_chemistwarehouse/backend/url_list', array(
     'urls' => $urls,
-    'urls_straight' => $urls_straight
+    'urls_straight' => $urls_straight,
+    'brands' => $brands
 ));
 
 $html->output('</div>');

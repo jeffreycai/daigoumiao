@@ -28,7 +28,10 @@
                     <span><a href="http://www.chemistwarehouse.com.au/<?php echo $url->href ?>"><?php echo $url->name ?></a> (<?php echo $url->itemNum ?>)</span>
                     <input style="position: absolute; top: 5px; right: 10px;" type="checkbox" name="urls[<?php echo $i ?>]" value="<?php echo $url->href ?>" <?php echo array_key_exists($url->href, $urls_straight) ? 'checked="checked"' : '' ?> />                    
                     <div style="position: absolute; top: 5px; right: 35px;">
-                      <input type="text" class="cats" name="categories[<?php echo $i++; ?>]" placeholder="categories" value="<?php echo array_key_exists($url->href, $urls_straight) ? $urls_straight[$url->href] : '' ?>" />
+                      <input type="text" class="tags" name="tags[<?php echo $i; ?>]" placeholder="tags" value="<?php echo array_key_exists($url->href, $urls_straight) ? $urls_straight[$url->href] : '' ?>" />
+                    </div>
+                    <div style="position: absolute; top: 5px; right: 225px;">
+                      <input type="text" class="tags" name="brand[<?php echo $i++; ?>]" placeholder="brand" value="<?php echo array_key_exists($url->href, $brands) ? $brands[$url->href] : '' ?>" />
                     </div>
                   </td>
                 </tr>
@@ -40,7 +43,10 @@
                     <span><a href="http://www.chemistwarehouse.com.au/<?php echo $child->href ?>"><?php echo $child->name ?></a> (<?php echo $child->itemNum ?>)</span>
                     <input style="position: absolute; top: 5px; right: 10px;" type="checkbox" name="urls[<?php echo $i ?>]" value="<?php echo $child->href ?>" <?php echo array_key_exists($child->href, $urls_straight) ? 'checked="checked"' : '' ?> />
                     <div style="position: absolute; top: 5px; right: 35px;">
-                      <input type="text" class="cats" name="categories[<?php echo $i++; ?>]" placeholder="categories" value="<?php echo array_key_exists($child->href, $urls_straight) ? $urls_straight[$child->href] : '' ?>" />
+                      <input type="text" class="tags" name="tags[<?php echo $i; ?>]" placeholder="tags" value="<?php echo array_key_exists($child->href, $urls_straight) ? $urls_straight[$child->href] : '' ?>" />
+                    </div>
+                    <div style="position: absolute; top: 5px; right: 225px;">
+                      <input type="text" class="brand" name="brand[<?php echo $i++; ?>]" placeholder="brand" value="<?php echo array_key_exists($child->href, $brands) ? $brands[$child->href] : '' ?>" />
                     </div>
                   </td>
                 </tr>

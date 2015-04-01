@@ -1,0 +1,16 @@
+routing:
+  brand_list:
+    path: ^\/admin\/brand\/list(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: brand/backend/list
+  brand_create:
+    path: ^\/admin\/brand\/create(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: brand/backend/create
+  brand_edit:
+    path: ^\/admin\/brand\/edit\/(\d+)$
+    isSecure: 1
+    i18n: 1
+    controller: brand/backend/edit

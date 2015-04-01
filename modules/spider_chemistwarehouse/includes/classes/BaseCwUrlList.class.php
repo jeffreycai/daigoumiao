@@ -5,7 +5,9 @@ include_once MODULESROOT . DS . 'core' . DS . 'includes' . DS . 'classes' . DS .
  * DB fields
  * - id
  * - url
- * - categories
+ * - tags
+ * - brand_id
+ * - vendor_id
  */
 class BaseCwUrlList extends DBObject {
   /**
@@ -38,11 +40,23 @@ class BaseCwUrlList extends DBObject {
    public function getUrl() {
      return $this->getDbFieldUrl();
    }
-   public function setCategories($var) {
-     $this->setDbFieldCategories($var);
+   public function setTags($var) {
+     $this->setDbFieldTags($var);
    }
-   public function getCategories() {
-     return $this->getDbFieldCategories();
+   public function getTags() {
+     return $this->getDbFieldTags();
+   }
+   public function setBrandId($var) {
+     $this->setDbFieldBrand_id($var);
+   }
+   public function getBrandId() {
+     return $this->getDbFieldBrand_id();
+   }
+   public function setVendorId($var) {
+     $this->setDbFieldVendor_id($var);
+   }
+   public function getVendorId() {
+     return $this->getDbFieldVendor_id();
    }
 
   
@@ -66,7 +80,9 @@ class BaseCwUrlList extends DBObject {
 CREATE TABLE IF NOT EXISTS `cw_url_list` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `url` VARCHAR(255) NOT NULL ,
-  `categories` VARCHAR(25) ,
+  `tags` VARCHAR(25) ,
+  `brand_id` INT ,
+  `vendor_id` INT ,
   PRIMARY KEY (`id`)
 )
 ENGINE = InnoDB

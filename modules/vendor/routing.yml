@@ -1,0 +1,16 @@
+routing:
+  vendor_list:
+    path: ^\/admin\/vendor\/list(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: vendor/backend/list
+  vendor_create:
+    path: ^\/admin\/vendor\/create(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: vendor/backend/create
+  vendor_edit:
+    path: ^\/admin\/vendor\/edit\/(\d+)$
+    isSecure: 1
+    i18n: 1
+    controller: vendor/backend/edit

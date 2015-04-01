@@ -10,6 +10,8 @@ include_once MODULESROOT . DS . 'core' . DS . 'includes' . DS . 'classes' . DS .
  * - thumbnail
  * - price
  * - updated_at
+ * - vendor_id
+ * - brand_id
  */
 class BaseItem extends DBObject {
   /**
@@ -84,6 +86,18 @@ class BaseItem extends DBObject {
    public function getUpdatedAt() {
      return $this->getDbFieldUpdated_at();
    }
+   public function setVendorId($var) {
+     $this->setDbFieldVendor_id($var);
+   }
+   public function getVendorId() {
+     return $this->getDbFieldVendor_id();
+   }
+   public function setBrandId($var) {
+     $this->setDbFieldBrand_id($var);
+   }
+   public function getBrandId() {
+     return $this->getDbFieldBrand_id();
+   }
 
   
   
@@ -111,9 +125,23 @@ CREATE TABLE IF NOT EXISTS `item` (
   `thumbnail` VARCHAR(256) ,
   `price` VARCHAR(6) ,
   `updated_at` INT ,
+  `vendor_id` INT DEFAULT 1 ,
+  `brand_id` INT DEFAULT 1 ,
   PRIMARY KEY (`id`)
  ,
-INDEX `item_original_id` (`original_id` ASC))
+INDEX `item_original_id` (`original_id` ASC) ,
+INDEX `fk-item-vendor_id-idx` (`vendor_id` ASC),
+CONSTRAINT `fk-item-vendor_id`
+  FOREIGN KEY (`vendor_id`)
+  REFERENCES `vendor` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE ,
+INDEX `fk-item-brand_id-idx` (`brand_id` ASC),
+CONSTRAINT `fk-item-brand_id`
+  FOREIGN KEY (`brand_id`)
+  REFERENCES `brand` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_general_ci;

@@ -1,0 +1,16 @@
+routing:
+  tag_list:
+    path: ^\/admin\/tag\/list(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: tag/backend/list
+  tag_create:
+    path: ^\/admin\/tag\/create(\/)?$
+    isSecure: 1
+    i18n: 1
+    controller: tag/backend/create
+  tag_edit:
+    path: ^\/admin\/tag\/edit\/(\d+)$
+    isSecure: 1
+    i18n: 1
+    controller: tag/backend/edit
