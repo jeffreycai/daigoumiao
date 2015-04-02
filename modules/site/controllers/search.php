@@ -10,9 +10,10 @@ $where = array();
 foreach ($tokens as $token) {
   $token = trim($token);
   $where[] = "title_zh LIKE '%" . mysql_escape_string($token) . "%'";
+  $where[] = "title_en LIKE '%" . mysql_escape_string($token) . "%'";
 }
-$where[] = "title_zh IS NOT NULL AND title_zh != ''";
-$where = "(" . implode(" OR ", $where) . ")";
+$where = implode(" OR ", $where);
+$where .= " AND (title_zh IS NOT NULL OR title_zh != '')";
 $where = " WHERE $where ";
 
 global $mysqli;
