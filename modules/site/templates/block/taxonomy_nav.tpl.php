@@ -16,13 +16,13 @@
       <div class="tab-content">
         <div class="tab-pane active" id="tab-1">
           <?php foreach (Tag::findAll() as $tag): ?>
-          <div class="simple_tag"><a href="items/tag/<?php echo $tag->getId() ?>"><?php echo $tag->getName() ?></a></div>
+          <div class="simple_tag"><a href="<?php echo uri('items/tag/' . $tag->getId()) ?>"><?php echo $tag->getName() ?></a></div>
           <?php endforeach; ?>
         </div>
 
         <div class="tab-pane" id="tab-2">
           <?php foreach (Brand::findAll() as $brand): ?>
-          <div class="simple_tag"><a href="items/brand/<?php echo $brand->getId() ?>"><?php echo $brand->getName() ?></a></div>
+          <div class="simple_tag"><a href="<?php echo uri('items/brand/' . $brand->getId()) ?>"><?php echo $brand->getName() ?></a></div>
           <?php endforeach; ?>
         </div>
 

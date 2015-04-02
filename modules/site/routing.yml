@@ -10,6 +10,11 @@ routing:
     isSecure: 0
     i18n: 1
     controller: site/tag
+  brand:
+    path: ^\/items\/brand\/(\d+)\/?$
+    isSecure: 0
+    i18n: 1
+    controller: site/brand
   goto:
     path: ^\/goto\/(\d+)\/?$
     isSecure: 0

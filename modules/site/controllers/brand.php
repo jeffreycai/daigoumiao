@@ -1,13 +1,13 @@
 <?php
 
-$tid = isset($vars[1]) ? $vars[1] : null;
-$tag;
-if (is_null($tid)) {
+$bid = isset($vars[1]) ? $vars[1] : null;
+$brand;
+if (is_null($bid)) {
   dispatch('site/404');
   exit;
 }
-$tag = Tag::findById($tid);
-if (is_null($tag)) {
+$brand = Brand::findById($bid);
+if (is_null($brand)) {
   dispatch('site/404');
   exit;
 }
@@ -18,7 +18,7 @@ if (!preg_match('/^\d+$/', $page)) {
   exit;
 }
 $perpage = 12;
-$total = Item::countAllByTag($tid, true);
+$total = Item::countAllByBrand($bid, true);
 $total_page = ceil($total / $perpage);
 
 
@@ -26,13 +26,13 @@ $total_page = ceil($total / $perpage);
 $html = new HTML();
 
 $html->renderOut('site/html_header', array(
-    'title' => '商品标签 - ' . $tag->getName() . ' :: ' . $settings['sitename'],
-    'body_class' => 'tag'
+    'title' => '商品品牌 - ' . $brand->getName() . ' :: ' . $settings['sitename'],
+    'body_class' => 'brand'
 ));
 $html->renderOut('site/block/topnav');
 //$html->renderOut('site/block/hero_home');
 $html->renderOut('site/block/header', array(
-    'title' => '标签 - ' . $tag->getName()
+    'title' => '品牌 - ' . $brand->getName()
 ));
 $html->renderOut('site/layout/fullpage', array(
     'main_region' => $html->render('site/layout/region/blocks', array(
@@ -40,17 +40,17 @@ $html->renderOut('site/layout/fullpage', array(
 //            'breadcrumb' => $html->render('site/components/breadcrumb', array(
 //                'items' => array(
 //                    '首页' => uri(''),
-//                    '标签 - ' . $tag->getName() => null
+//                    '标签 - ' . $brand->getName() => null
 //                )
 //            )),
             'items' => $html->render('site/block/items', array(
-                'items' => Item::findAllByTagWithPage($tag, $page, $perpage, true),
+                'items' => Item::findAllByBrandWithPage($brand, $page, $perpage, true),
                 'current_page' => $page,
                 'total_page' => $total_page,
                 'total' => $total,
                 'pager' => $html->render('site/components/pagination', array('total' => $total_page, 'page' => $page)),
                 'perpage' => $perpage,
-//                'title' => '标签 - ' . $tag->getName() 
+//                'title' => '标签 - ' . $brand->getName() 
             )),
             'taxonomy_nav' => $html->render('site/block/taxonomy_nav'),
         )

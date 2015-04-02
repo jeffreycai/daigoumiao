@@ -24,7 +24,7 @@ class Item extends BaseItem {
     return "http://www.chemistwarehouse.com.au/product.asp?id=" . $this->getOriginalId();
   }
   
-  static function countAllByTag($tag) {
+  static function countAllByTag($tag, $title_zh_only = false) {
     // get tag_id
     $tid = null;
     if (is_object($tag) && is_a($tag, 'Tag')) {
@@ -40,7 +40,10 @@ class Item extends BaseItem {
     }
     
     global $mysqli;
-    $query = "SELECT COUNT(*) as 'count' FROM item_tag WHERE tag_id=" . $tid;
+    if ($title_zh_only) {
+      $title_zh_condition = " AND (title_zh IS NOT NULL OR title_zh != '') ";
+    }
+    $query = "SELECT COUNT(*) as 'count' FROM item_tag WHERE tag_id=" . $tid . $title_zh_condition;
     if ($result = $mysqli->query($query)) {
       return $result->fetch_object()->count;
     }
@@ -78,6 +81,65 @@ class Item extends BaseItem {
     
     return $rtn;
   }
+  
+  static function countAllByBrand($brand, $title_zh_only = false) {
+    // get brand_id
+    $bid = null;
+    if (is_object($brand) && is_a($brand, 'Brand')) {
+      $bid = $brand->getId();
+    } else if (is_string($brand) && !preg_match('/^\d+$/', $brand)) {
+      $brand = Brand::findByName($brand);
+      $brand = $brand ? $brand->getId() : null;
+    } else {
+      $bid = $brand;
+    }
+    if ($bid == null) {
+      return 0;
+    }
+    
+    global $mysqli;
+    if ($title_zh_only) {
+      $title_zh_condition = " AND (title_zh IS NOT NULL OR title_zh != '') ";
+    }
+    $query = "SELECT COUNT(*) as 'count' FROM item WHERE brand_id=" . $bid . $title_zh_condition;
+    if ($result = $mysqli->query($query)) {
+      return $result->fetch_object()->count;
+    }
+  }
+  
+  static function findAllByBrandWithPage($brand, $page, $entries_per_page, $title_zh_only = false) {
+    // get brand_id
+    $bid = null;
+    if (is_object($brand) && is_a($brand, 'Brand')) {
+      $bid = $brand->getId();
+    } else if (is_string($brand)) {
+      $brand = Brand::findByName($brand);
+      $brand = $brand ? $brand->getId() : null;
+    } else if (is_int($brand)) {
+      $bid = $brand;
+    }
+    if ($bid == null) {
+      return false;
+    }
+    
+    global $mysqli;
+    $title_zh_condition = '';
+    if ($title_zh_only) {
+      $title_zh_condition = " AND (title_zh IS NOT NULL OR title_zh != '') ";
+    }
+    $query = "SELECT * FROM item WHERE brand_id=$bid  $title_zh_condition LIMIT " . ($page - 1) * $entries_per_page . ", " . $entries_per_page;
+    $result = $mysqli->query($query);
+    
+    $rtn = array();
+    while ($result && $b = $result->fetch_object()) {
+      $obj= new Item();
+      DBObject::importQueryResultToDbObject($b, $obj);
+      $rtn[] = $obj;
+    }
+    
+    return $rtn;
+  }
+  
   
   public function getBrand() {
     $bid = $this->getBrandId();
