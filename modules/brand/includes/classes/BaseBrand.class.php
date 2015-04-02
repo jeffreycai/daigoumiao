@@ -58,7 +58,7 @@ class BaseBrand extends DBObject {
       return $mysqli->query('
 CREATE TABLE IF NOT EXISTS `brand` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(20) ,
+  `name` VARCHAR(40) ,
   PRIMARY KEY (`id`)
 )
 ENGINE = InnoDB
