@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-4">
-        <a href="<?php echo uri('') ?>"><img width="172" height="54" src="<?php echo uri('modules/site/assets/images/logo.png', false) ?>" alt="<?php echo $settings['sitename'] . "logo" ?>" /></a>
+        <a href="<?php echo uri('') ?>"><img width="172" height="54" src="<?php echo uri('modules/site/assets/images/logo_full.png', false) ?>" alt="<?php echo $settings['sitename'] . "logo" ?>" /></a>
       </div>
       <div class="col-sm-4 col-sm-push-4">
         <form id="search-form" action="<?php echo uri('items/search') ?>" method="GET">

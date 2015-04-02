@@ -44,7 +44,7 @@ $html->renderOut('site/layout/fullpage', array(
 //                )
 //            )),
             'items' => $html->render('site/block/items', array(
-                'items' => Item::findAllByTagWithPage($tag, $page, $perpage),
+                'items' => Item::findAllByTagWithPage($tag, $page, $perpage, true),
                 'current_page' => $page,
                 'total_page' => $total_page,
                 'total' => $total,

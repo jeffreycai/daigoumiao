@@ -74,7 +74,7 @@ jQuery(function($){
           'zh' => ' 标记为必填项'
       )).'
     </i></small></div>
-    <input type="submit" name="submit" class="btn btn-lg btn-success btn-block disabled" value="'.i18n(array('en' => 'Login', 'zh' => '登录')).'" />
+    <input type="submit" name="submit" class="btn btn-success btn-block disabled" value="'.i18n(array('en' => 'Submit', 'zh' => '提交')).'" />
     '.Form::loadSpamToken('#contact', 'global contact form').'
   </fieldset>
 </form>

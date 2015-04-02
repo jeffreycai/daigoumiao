@@ -20,6 +20,12 @@ $end_entry = min(array($total, $current_page*$perpage));
     </div>
     <?php endif; ?>
     
+<?php if (empty($items)): ?>
+    <div class="col-xs-12">
+    <p>没有找到任何商品</p>
+    </div>
+<?php endif; ?>
+    
 <?php foreach($items as $item): ?>
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6">
       <div class="card">

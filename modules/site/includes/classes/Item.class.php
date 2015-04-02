@@ -46,7 +46,7 @@ class Item extends BaseItem {
     }
   }
   
-  static function findAllByTagWithPage($tag, $page, $entries_per_page) {
+  static function findAllByTagWithPage($tag, $page, $entries_per_page, $title_zh_only = false) {
     // get tag_id
     $tid = null;
     if (is_object($tag) && is_a($tag, 'Tag')) {
@@ -62,7 +62,11 @@ class Item extends BaseItem {
     }
     
     global $mysqli;
-    $query = "SELECT i.* FROM item as i, item_tag as it WHERE i.id=it.item_id AND it.tag_id=$tid LIMIT " . ($page - 1) * $entries_per_page . ", " . $entries_per_page;
+    $title_zh_condition = '';
+    if ($title_zh_only) {
+      $title_zh_condition = " AND (title_zh IS NOT NULL OR title_zh != '') ";
+    }
+    $query = "SELECT i.* FROM item as i, item_tag as it WHERE i.id=it.item_id AND it.tag_id=$tid  $title_zh_condition LIMIT " . ($page - 1) * $entries_per_page . ", " . $entries_per_page;
     $result = $mysqli->query($query);
     
     $rtn = array();
