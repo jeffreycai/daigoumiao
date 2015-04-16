@@ -79,22 +79,22 @@ class Asset {
   
   static function printTopAssets($which_end) {
     foreach (self::getTopAssets('css', $which_end) as $asset) {
-      $url = preg_match('/^\/\//', $asset->source) ? $asset->source : ('/' . get_sub_root() . 'modules/' . $asset->source);
+      $url = preg_match('/^(\/\/|http)/', $asset->source) ? $asset->source : ('/' . get_sub_root() . 'modules/' . $asset->source);
       echo "  <link rel='stylesheet' href='$url'>\n";
     }
     foreach (self::getTopAssets('js', $which_end) as $asset) {
-      $url = preg_match('/^\/\//', $asset->source) ? $asset->source : ('/' . get_sub_root() . 'modules/' . $asset->source);
+      $url = preg_match('/^(\/\/|http)/', $asset->source) ? $asset->source : ('/' . get_sub_root() . 'modules/' . $asset->source);
       echo "  <script type='text/javascript' src='$url'></script>\n";
     }
   }
   
   static function printBottomAssets($which_end) {
     foreach (self::getBottomAssets('css', $which_end) as $asset) {
-      $url = preg_match('/^\/\//', $asset->source) ? $asset->source : ('/' . get_sub_root() . 'modules/' . $asset->source);
+      $url = preg_match('/^(\/\/|http)/', $asset->source) ? $asset->source : ('/' . get_sub_root() . 'modules/' . $asset->source);
       echo "  <link rel='stylesheet' href='$url'>\n";
     }
     foreach (self::getBottomAssets('js', $which_end) as $asset) {
-      $url = preg_match('/^\/\//', $asset->source) ? $asset->source : ('/' . get_sub_root() . 'modules/' . $asset->source);
+      $url = preg_match('/^(\/\/|http)/', $asset->source) ? $asset->source : ('/' . get_sub_root() . 'modules/' . $asset->source);
       echo "  <script type='text/javascript' src='$url'></script>\n";
     }
   }

@@ -132,8 +132,9 @@ if (isset($_GET['keyword']) && $_GET['keyword'] != "") {
   foreach ($tokens as $token) {
     $token = trim($token);
     if ($token != '') {
-      $w[] = "title_zh LIKE '%".mysql_escape_string($token)."%'";
-      $w[] = "title_en LIKE '%".mysql_escape_string($token)."%'";
+      global $mysqli;
+      $w[] = "title_zh LIKE '%".mysqli_escape_string($mysqli, $token)."%'";
+      $w[] = "title_en LIKE '%".mysqli_escape_string($mysqli, $token)."%'";
     }
   }
   $where[] = "(".implode(' OR ', $w).")";

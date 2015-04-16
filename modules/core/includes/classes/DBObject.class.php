@@ -231,7 +231,8 @@ abstract class DBObject {
    */
   static function prepare_val_for_sql($val) {
     if (is_string($val)) {
-      return "'" . mysql_escape_string($val) . "'";
+      global $mysqli;
+      return "'" . mysqli_escape_string($mysqli, $val) . "'";
     } else if (is_null($val)) {
       return 'NULL';
     } else {

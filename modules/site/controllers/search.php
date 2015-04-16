@@ -8,9 +8,10 @@ $per_page = 32;
 $tokens = explode(" ", $keywords);
 $where = array();
 foreach ($tokens as $token) {
+  global $mysqli;
   $token = trim($token);
-  $where[] = "title_zh LIKE '%" . mysql_escape_string($token) . "%'";
-  $where[] = "title_en LIKE '%" . mysql_escape_string($token) . "%'";
+  $where[] = "title_zh LIKE '%" . mysqli_escape_string($mysqli, $token) . "%'";
+  $where[] = "title_en LIKE '%" . mysqli_escape_string($mysqli, $token) . "%'";
 }
 $where = implode(" OR ", $where);
 $where .= " AND (title_zh IS NOT NULL OR title_zh != '')";
